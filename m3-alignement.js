@@ -85,11 +85,58 @@ function fusionnerElisionsAlignement(paires) {
   return result;
 }
 
+// ── Fusion des tokens proches (Levenshtein) ──────────────────────────────
+// Après le LCS, les tokens erronés non identiques restent en paires saisie+original
+// On les aligne si leur distance Levenshtein est suffisamment faible
+
+function levenshteinLocal(a, b) {
+  const m = a.length, n = b.length;
+  const dp = Array.from({length: m+1}, (_, i) => [i, ...Array(n).fill(0)]);
+  for (let j = 0; j <= n; j++) dp[0][j] = j;
+  for (let i = 1; i <= m; i++)
+    for (let j = 1; j <= n; j++)
+      dp[i][j] = a[i-1]===b[j-1] ? dp[i-1][j-1] : 1+Math.min(dp[i-1][j],dp[i][j-1],dp[i-1][j-1]);
+  return dp[m][n];
+}
+
+function fusionnerProches(paires) {
+  const result = [];
+  let i = 0;
+  while (i < paires.length) {
+    const p = paires[i];
+    const suivant = paires[i+1];
+
+    const testerProximite = (tokS, tokO) => {
+      const ns = supprimeAccents(normaliserLCS(tokS));
+      const no = supprimeAccents(normaliserLCS(tokO));
+      if (!ns || !no) return false;
+      const dist = levenshteinLocal(ns, no);
+      return dist / Math.max(ns.length, no.length) <= 0.5;
+    };
+
+    if (p.type === 'saisie' && suivant && suivant.type === 'original') {
+      if (testerProximite(p.s, suivant.o)) {
+        result.push({ type: 'proche', s: p.s, o: suivant.o });
+        i += 2; continue;
+      }
+    }
+    if (p.type === 'original' && suivant && suivant.type === 'saisie') {
+      if (testerProximite(suivant.s, p.o)) {
+        result.push({ type: 'proche', s: suivant.s, o: p.o });
+        i += 2; continue;
+      }
+    }
+    result.push(p); i++;
+  }
+  return result;
+}
+
 // ── Extraction des erreurs depuis les paires alignées ─────────────────────
 
 function extraireErreursAlignes(tokSaisie, tokOriginal) {
   const paires  = lcsAligner(tokSaisie, tokOriginal);
-  const pairesF = fusionnerElisionsAlignement(paires);
+  const pairesE = fusionnerElisionsAlignement(paires);
+  const pairesF = fusionnerProches(pairesE);
   const erreurs = [];
   let idx = 0;
 
@@ -99,6 +146,13 @@ function extraireErreursAlignes(tokSaisie, tokOriginal) {
       if (normaliser(p.s) !== normaliser(p.o)) {
         erreurs.push({ index: idx, attendu: p.o, saisi: p.s, ...classerErreur(p.o, p.s) });
       }
+      idx++;
+      return;
+    }
+
+    if (p.type === 'proche') {
+      // Tokens proches mais différents — classifier normalement
+      erreurs.push({ index: idx, attendu: p.o, saisi: p.s, ...classerErreur(p.o, p.s) });
       idx++;
       return;
     }
