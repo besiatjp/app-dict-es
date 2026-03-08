@@ -142,9 +142,11 @@ function verifierPhrase() {
   state._nbMotsExact = (diff === 0);
   if (diff !== 0) {
     const msg = diff > 0
-      ? `Il y a ${diff} mot${diff>1?'s':''} en trop.`
-      : `Il manque ${Math.abs(diff)} mot${Math.abs(diff)>1?'s':''}.`;
-    afficherMessage(zone, 'erreur', '✗ '+msg);
+      ? 'Il y a un mot en trop — réécoute la phrase.'
+      : 'Il manque un mot — réécoute la phrase.';
+    zone.innerHTML = `<div class="message erreur"><span class="icone-msg">✗</span><span>${msg}</span></div>`;
+    document.getElementById('btn-indice').classList.add('cache');
+    document.getElementById('btn-contexte').classList.add('cache');
     ajouterHistorique(msg, 'erreur', false);
     enregistrerTentative(state.theme, state.phraseIndex, false, state.indicesCourants, []);
     return;
