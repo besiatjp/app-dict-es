@@ -89,6 +89,42 @@ const LEXIQUE_VERBAL = {
   "recouvert": {type:"part", formes:["recouvrir"]},
 };
 
+// ── Paires d'accord connues ───────────────────────────────────────────────
+// Détectées avant Levenshtein pour ne pas les classer en "frappe"
+
+const PAIRES_ACCORD = new Set([
+  // Articles définis
+  'le|la', 'le|les', 'la|les',
+  // Articles indéfinis
+  'un|une', 'un|des', 'une|des',
+  // Articles contractés
+  'au|aux', 'au|à', 'aux|à',
+  'du|des', 'du|de', 'des|de',
+  // Démonstratifs
+  'ce|cet', 'ce|ces', 'cet|ces', 'cette|ces',
+  // Possessifs
+  'mon|ma', 'mon|mes', 'ma|mes',
+  'ton|ta', 'ton|tes', 'ta|tes',
+  'son|sa', 'son|ses', 'sa|ses',
+  'notre|nos', 'votre|vos', 'leur|leurs',
+  // Interrogatifs
+  'quel|quelle', 'quel|quels', 'quel|quelles', 'quelle|quelles', 'quels|quelles',
+  // Adjectifs double forme
+  'beau|bel', 'beau|belle', 'beau|beaux', 'bel|beaux', 'belle|belles', 'beaux|belles',
+  'nouveau|nouvel', 'nouveau|nouvelle', 'nouveau|nouveaux', 'nouvelle|nouvelles',
+  'vieux|vieil', 'vieux|vieille', 'vieux|vieilles', 'vieil|vieilles',
+  'tout|toute', 'tout|tous', 'tout|toutes', 'toute|toutes', 'tous|toutes',
+  'autre|autres',
+  // Pronoms
+  'il|elle', 'il|ils', 'il|elles', 'elle|elles', 'ils|elles',
+  'celui|celle', 'celui|ceux', 'celle|celles', 'ceux|celles',
+  'lequel|laquelle', 'lequel|lesquels', 'laquelle|lesquelles',
+]);
+
+function estPaireAccord(a, s) {
+  return PAIRES_ACCORD.has(a + '|' + s) || PAIRES_ACCORD.has(s + '|' + a);
+}
+
 function detecterConfusionVerbale(a, s) {
   const ea = LEXIQUE_VERBAL[a], es = LEXIQUE_VERBAL[s];
   if (!ea || !es) return null;
@@ -149,6 +185,10 @@ function classerErreur(attendu, saisi) {
     if (accordFin.includes(termA) || accordFin.includes(termS))
       return { type: 'syntaxe', detail: `accord : "${saisi}" au lieu de "${attendu}"` };
   }
+
+  // Paires d'accord connues — priorité sur Levenshtein
+  if (estPaireAccord(a, s))
+    return { type: 'syntaxe', detail: 'accord : "' + saisi + '" au lieu de "' + attendu + '"' };
 
   const dist   = levenshtein(aS, sS);
   const motRef = Math.max(aS.length, sS.length);

@@ -128,7 +128,7 @@ function indiceCerclesPonctuation(zone, indicesPonct) {
   requestAnimationFrame(() => {
     div.style.transition = 'opacity 0.4s'; div.style.opacity = '1';
     const conteneur = div.querySelector('.phrase-soulignee');
-    requestAnimationFrame(() => poserOverlays(conteneur, indicesPonct));
+    setTimeout(() => poserOverlays(conteneur, indicesPonct), 50);
   });
   ajouterHistorique('Indice : zone de ponctuation', 'indice', false);
 }
@@ -153,7 +153,7 @@ function indiceCorrection(zone) {
     requestAnimationFrame(() => {
       div.style.transition = 'opacity 0.4s'; div.style.opacity = '1';
       const conteneur = div.querySelector('.phrase-correction');
-      requestAnimationFrame(() => poserOverlays(conteneur, indicesPonct));
+      setTimeout(() => poserOverlays(conteneur, indicesPonct), 50);
     });
   } else {
     div.innerHTML = `<span class="num-indice">3</span><span>Phrase correcte :<br><div class="phrase-correction">${state.phraseOriginale}</div></span>`;
