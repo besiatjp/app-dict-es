@@ -97,12 +97,15 @@ function getStatsTheme(theme) {
 
 function chercherPhrasesAvecMot(mot) {
   const motN = supprimeAccents(normaliser(mot));
+  // Cherche le mot ET ses formes en nombre (singulier/pluriel)
+  // On retire le s/x final éventuel pour obtenir la racine
+  const racine = motN.replace(/[sx]$/, '');
   const resultats = [];
   Object.entries(DICTEES).forEach(([theme, phrases]) => {
     phrases.forEach((phrase, index) => {
       const phraseN = supprimeAccents(normaliser(phrase));
-      // Cherche le mot comme token entier
-      const re = new RegExp('\\b' + motN.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\b', 'i');
+      // Matche la racine suivie de s, x, ou fin de mot
+      const re = new RegExp('\\b' + racine.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '[sx]?\\b', 'i');
       if (re.test(phraseN)) resultats.push({ theme, index, phrase });
     });
   });

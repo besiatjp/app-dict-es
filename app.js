@@ -194,6 +194,44 @@ function afficherAnalyse(zone, motsSaisie, motsOriginal) {
   document.getElementById('btn-contexte').classList.remove('cache');
   enregistrerTentative(state.theme, state.phraseIndex, false, state.indicesCourants, erreurs.map(e=>({attendu:e.attendu, type:e.type})));
   state._erreurs = erreurs; state._motsSaisie = motsSaisie; state._motsOriginal = motsOriginal;
+  // Suggestion de renforcement si un mot dépasse 3 erreurs
+  afficherSuggestionRenforcement(zone, erreurs.map(e => e.attendu));
+}
+
+// ─── Suggestion de renforcement ────────────────────────────────────────────
+function afficherSuggestionRenforcement(zone, mots) {
+  const stats = chargerStats();
+  const motsARevoir = [];
+  mots.forEach(mot => {
+    let total = 0;
+    Object.values(stats).forEach(theme => {
+      Object.values(theme).forEach(phrase => {
+        const e = phrase.erreurs?.[mot];
+        if (e) total += typeof e === 'number' ? e : (e.count || 0);
+      });
+    });
+    if (total >= 3) motsARevoir.push({ mot, total });
+  });
+  if (motsARevoir.length === 0) return;
+
+  // Prendre le mot le plus souvent raté
+  motsARevoir.sort((a, b) => b.total - a.total);
+  const { mot, total } = motsARevoir[0];
+  const phrases = chercherPhrasesAvecMot(mot);
+  if (phrases.length === 0) return;
+
+  const suggestion = document.createElement('div');
+  suggestion.className = 'suggestion-renforcement';
+  suggestion.innerHTML = `<span class="suggestion-icone">💡</span>
+    <span>Tu as souvent du mal avec <em>${mot}</em> (${total}×) —
+    <button class="btn-suggestion" data-mot="${mot}">voir les phrases avec ce mot</button>
+    </span>`;
+  zone.appendChild(suggestion);
+
+  suggestion.querySelector('.btn-suggestion').addEventListener('click', () => {
+    document.getElementById('panneau-stats').classList.remove('cache');
+    afficherPhrasesAvecMot(mot);
+  });
 }
 
 // ─── Historique ────────────────────────────────────────────────────────────
