@@ -192,7 +192,7 @@ function afficherAnalyse(zone, motsSaisie, motsOriginal) {
   ajouterHistorique(msgTexte, 'erreur', false);
   document.getElementById('btn-indice').classList.remove('cache');
   document.getElementById('btn-contexte').classList.remove('cache');
-  enregistrerTentative(state.theme, state.phraseIndex, false, state.indicesCourants, erreurs.map(e=>e.attendu));
+  enregistrerTentative(state.theme, state.phraseIndex, false, state.indicesCourants, erreurs.map(e=>({attendu:e.attendu, type:e.type})));
   state._erreurs = erreurs; state._motsSaisie = motsSaisie; state._motsOriginal = motsOriginal;
 }
 
