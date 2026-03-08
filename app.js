@@ -588,55 +588,91 @@ function indiceSoulignement(zone) {
   ajouterHistorique('Indice : soulignement', 'indice', false);
 }
 
-// ── Indice visuel ponctuation : ovales CSS sur les zones fautives ──────────
+// ── Indice visuel ponctuation : overlays positionnés via getBoundingClientRect ──
 
-function rendrePhraseCercles(tokens, texteSource, indicesPonct) {
-  const segments = [];
-  let cherche = texteSource, offset = 0;
-  tokens.forEach(tok => {
-    const idx = cherche.indexOf(tok);
+const TAIL = 3;        // nb de caractères encerclés de chaque côté
+const DEBORD = 12;     // px de débordement à droite pour le point final manquant
+const OVERLAY_STYLE = `
+  position:absolute;
+  pointer-events:none;
+  border: 2px solid var(--orange);
+  border-radius: 999px;
+  box-shadow: 0 0 0 2px rgba(217,119,6,0.15);
+`;
+
+// Construit le HTML de la saisie avec des spans .pc-tok sur chaque token
+function rendrePhraseSaisie(saisie, indicesPonct) {
+  const tokens = tokeniserBrut(saisie);
+  let html = '', reste = saisie;
+  tokens.forEach((tok, i) => {
+    const idx = reste.indexOf(tok);
     if (idx === -1) return;
-    segments.push({ tok, start: offset + idx });
-    offset += idx + tok.length;
-    cherche = cherche.slice(idx + tok.length);
-  });
-
-  const zones = [];
-  segments.forEach((seg, i) => {
-    if (!indicesPonct.has(i)) return;
-    const tokEnd  = seg.start + seg.tok.length;
-    const nextSeg = segments[i + 1];
-    if (nextSeg) {
-      zones.push({ type: 'espace', pos: tokEnd, nextStart: nextSeg.start });
+    // Texte avant le token (espaces)
+    html += reste.slice(0, idx);
+    // Token éventuellement marqué
+    if (indicesPonct.has(i)) {
+      html += `<span class="pc-tok" data-idx="${i}">${tok}</span>`;
     } else {
-      const TAIL = 3;
-      const cercleDébut = seg.tok.length > TAIL ? seg.start + seg.tok.length - TAIL : seg.start;
-      zones.push({ type: 'fin', pos: cercleDébut, end: tokEnd });
+      html += tok;
     }
+    reste = reste.slice(idx + tok.length);
   });
-
-  if (zones.length === 0) return texteSource;
-
-  zones.sort((a, b) => a.pos - b.pos);
-  let html = '', cursor = 0;
-  zones.forEach(z => {
-    if (z.type === 'espace') {
-      html += texteSource.slice(cursor, z.pos);
-      html += '<span class="ponct-cercle">' + texteSource.slice(z.pos, z.nextStart) + '</span>';
-      cursor = z.nextStart;
-    } else {
-      html += texteSource.slice(cursor, z.pos);
-      html += '<span class="ponct-cercle ponct-cercle-fin">' + texteSource.slice(z.pos, z.end) + '</span>';
-      cursor = z.end;
-    }
-  });
-  html += texteSource.slice(cursor);
+  html += reste;
   return html;
 }
 
-function construirePhraseAvecCercles(indicesPonct) {
-  const tokens = tokeniserBrut(state.phraseOriginale);
-  return rendrePhraseCercles(tokens, state.phraseOriginale, indicesPonct);
+// Pose les overlays en absolu sur le conteneur phrase
+function poserOverlays(conteneur, indicesPonct) {
+  // Nettoyer les anciens overlays
+  conteneur.querySelectorAll('.pc-overlay').forEach(el => el.remove());
+
+  const spans = conteneur.querySelectorAll('.pc-tok');
+  const rectC = conteneur.getBoundingClientRect();
+
+  spans.forEach(span => {
+    const i = parseInt(span.dataset.idx);
+    if (!indicesPonct.has(i)) return;
+
+    const rectA = span.getBoundingClientRect();
+    const spanSuivant = conteneur.querySelector(`.pc-tok[data-idx="${i+1}"]`);
+
+    let left, top, width, height;
+    const PAD_V = 3; // padding vertical de l'ovale
+
+    if (spanSuivant) {
+      // Cas jonction : ovale de la fin du token A au début du token B
+      const rectB = spanSuivant.getBoundingClientRect();
+
+      // Fin du token A : derniers TAIL caractères
+      const charWidth = rectA.width / span.textContent.length;
+      const leftA = rectA.left + rectA.width - (TAIL * charWidth);
+
+      // Début du token B : premiers TAIL caractères
+      const charWidthB = rectB.width / spanSuivant.textContent.length;
+      const rightB = rectB.left + (TAIL * charWidthB);
+
+      left   = leftA - rectC.left - 4;
+      top    = rectA.top - rectC.top - PAD_V;
+      width  = rightB - leftA + 8;
+      height = rectA.height + PAD_V * 2;
+
+    } else {
+      // Cas fin de phrase : ovale sur les derniers TAIL caractères + débordement
+      const charWidth = rectA.width / span.textContent.length;
+      const leftA = rectA.left + rectA.width - (TAIL * charWidth);
+
+      left   = leftA - rectC.left - 4;
+      top    = rectA.top - rectC.top - PAD_V;
+      width  = (TAIL * charWidth) + DEBORD + 8;
+      height = rectA.height + PAD_V * 2;
+    }
+
+    const overlay = document.createElement('div');
+    overlay.className = 'pc-overlay';
+    overlay.style.cssText = OVERLAY_STYLE
+      + `left:${left}px;top:${top}px;width:${width}px;height:${height}px;`;
+    conteneur.appendChild(overlay);
+  });
 }
 
 function indiceCerclesPonctuation(zone, indicesPonct) {
@@ -645,9 +681,22 @@ function indiceCerclesPonctuation(zone, indicesPonct) {
     return;
   }
   const saisie = nettoyerTexte(document.getElementById('champ-saisie').value);
-  const tokens = tokeniserBrut(saisie);
-  const html   = rendrePhraseCercles(tokens, saisie, indicesPonct);
-  ajouterIndice(zone, 2, 'Zone(s) à corriger :<br><div class="phrase-soulignee">' + html + '</div>');
+  const html   = rendrePhraseSaisie(saisie, indicesPonct);
+
+  // Créer l'indice avec position:relative sur le conteneur phrase
+  const div = document.createElement('div');
+  div.className = 'indice indice-2';
+  div.innerHTML = `<span class="num-indice">2</span><span>Zone(s) à corriger :<br><div class="phrase-soulignee" style="position:relative">${html}</div></span>`;
+  div.style.opacity = '0';
+  zone.appendChild(div);
+  requestAnimationFrame(() => {
+    div.style.transition = 'opacity 0.4s';
+    div.style.opacity = '1';
+    // Poser les overlays après rendu
+    const conteneur = div.querySelector('.phrase-soulignee');
+    requestAnimationFrame(() => poserOverlays(conteneur, indicesPonct));
+  });
+
   ajouterHistorique('Indice : zone de ponctuation', 'indice', false);
 }
 
@@ -660,11 +709,29 @@ function indiceCorrection(zone) {
     ? state._indicesPonct
     : new Set((state._erreurs || []).filter(e => typesPonctuation.has(e.type)).map(e => e.index));
 
-  const phraseHtml = indicesPonct.size > 0
-    ? construirePhraseAvecCercles(indicesPonct)
-    : state.phraseOriginale;
+  // Dans la correction, on montre la phrase originale avec ovales
+  // sur les mêmes positions que la saisie
+  const div = document.createElement('div');
+  div.className = 'indice indice-3';
 
-  ajouterIndice(zone, 3, `Phrase correcte :<br><div class="phrase-correction">${phraseHtml}</div>`);
+  if (indicesPonct.size > 0) {
+    const html = rendrePhraseSaisie(state.phraseOriginale, indicesPonct);
+    div.innerHTML = `<span class="num-indice">3</span><span>Phrase correcte :<br><div class="phrase-correction" style="position:relative">${html}</div></span>`;
+    div.style.opacity = '0';
+    zone.appendChild(div);
+    requestAnimationFrame(() => {
+      div.style.transition = 'opacity 0.4s';
+      div.style.opacity = '1';
+      const conteneur = div.querySelector('.phrase-correction');
+      requestAnimationFrame(() => poserOverlays(conteneur, indicesPonct));
+    });
+  } else {
+    div.innerHTML = `<span class="num-indice">3</span><span>Phrase correcte :<br><div class="phrase-correction">${state.phraseOriginale}</div></span>`;
+    div.style.opacity = '0';
+    zone.appendChild(div);
+    requestAnimationFrame(() => { div.style.transition='opacity 0.4s'; div.style.opacity='1'; });
+  }
+
   ajouterHistorique('Correction affichée', 'indice', false);
 }
 
