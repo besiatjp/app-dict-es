@@ -103,30 +103,38 @@ function fusionnerProches(paires) {
   const result = [];
   let i = 0;
   while (i < paires.length) {
-    const p = paires[i];
-    const suivant = paires[i+1];
-
-    const testerProximite = (tokS, tokO) => {
-      const ns = supprimeAccents(normaliserLCS(tokS));
-      const no = supprimeAccents(normaliserLCS(tokO));
-      if (!ns || !no) return false;
-      const dist = levenshteinLocal(ns, no);
-      return dist / Math.max(ns.length, no.length) <= 0.5;
-    };
-
-    if (p.type === 'saisie' && suivant && suivant.type === 'original') {
-      if (testerProximite(p.s, suivant.o)) {
-        result.push({ type: 'proche', s: p.s, o: suivant.o });
-        i += 2; continue;
-      }
+    // Collecter un bloc contigu de tokens saisie et original non matchés
+    if (paires[i].type !== 'saisie' && paires[i].type !== 'original') {
+      result.push(paires[i]); i++; continue;
     }
-    if (p.type === 'original' && suivant && suivant.type === 'saisie') {
-      if (testerProximite(suivant.s, p.o)) {
-        result.push({ type: 'proche', s: suivant.s, o: p.o });
-        i += 2; continue;
-      }
+    const blokS = [], blokO = [];
+    while (i < paires.length && (paires[i].type === 'saisie' || paires[i].type === 'original')) {
+      if (paires[i].type === 'saisie') blokS.push(paires[i].s);
+      else blokO.push(paires[i].o);
+      i++;
     }
-    result.push(p); i++;
+    if (blokS.length === 0) { blokO.forEach(o => result.push({ type: 'original', o })); continue; }
+    if (blokO.length === 0) { blokS.forEach(s => result.push({ type: 'saisie', s })); continue; }
+
+    // Aligner chaque token saisie vers le token original le plus proche (greedy)
+    const usedO = new Array(blokO.length).fill(false);
+    const aligned = blokS.map(s => {
+      const ns = supprimeAccents(normaliserLCS(s));
+      let bestIdx = -1, bestDist = Infinity;
+      blokO.forEach((o, j) => {
+        if (usedO[j]) return;
+        const no = supprimeAccents(normaliserLCS(o));
+        if (!ns || !no) return;
+        const dist = levenshteinLocal(ns, no);
+        const ratio = dist / Math.max(ns.length, no.length);
+        if (ratio <= 0.5 && dist < bestDist) { bestDist = dist; bestIdx = j; }
+      });
+      if (bestIdx >= 0) { usedO[bestIdx] = true; return { type: 'proche', s, o: blokO[bestIdx] }; }
+      return { type: 'saisie', s };
+    });
+
+    aligned.forEach(p => result.push(p));
+    blokO.forEach((o, j) => { if (!usedO[j]) result.push({ type: 'original', o }); });
   }
   return result;
 }
