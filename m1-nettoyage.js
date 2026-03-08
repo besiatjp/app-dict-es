@@ -10,10 +10,12 @@ const FORMES_EQUIVALENTES = {
 // Élisions reconnues pour la fusion avant comptage
 const ELISIONS = ["l", "d", "j", "m", "t", "s", "n", "c", "qu", "lorsqu", "jusque", "puisqu", "quoiqu"];
 
-// Fusionne les élisions sans apostrophe : "l office" → "l'office"
+// Fusionne les élisions avec espace : "l office" → "l'office"
+// Utilise (^|[ ]) au lieu de \b pour éviter de matcher en fin de mot (ex. "accrochés o" ne devient PAS "accrochés'o")
 function fusionnerElisions(t) {
-  const re = new RegExp(`\\b(${ELISIONS.join('|')})\\s+([\\wàâäéèêëîïôùûüçœæ])`, 'gi');
-  return t.replace(re, (_, el, suite) => `${el}'${suite}`);
+  const elisionsTries = [...ELISIONS].sort((a, b) => b.length - a.length);
+  const re = new RegExp('(^|[ ])(' + elisionsTries.join('|') + ') ([\\wàâäéèêëîïôùûüçœæ])', 'gi');
+  return t.replace(re, (_, sep, el, suite) => `${sep}${el}'${suite}`);
 }
 
 // Nettoyage de la saisie brute
