@@ -87,17 +87,23 @@ function ajouterIndice(zone, niveau, html) {
 }
 
 function indiceSoulignement(zone) {
-  if (!state._motsSaisie || !state._motsOriginal) return;
-  const html = state._motsSaisie.map((mot, i) => {
-    const attendu = state._motsOriginal[i] || '';
-    if (normaliser(mot) !== normaliser(attendu)) {
-      const e      = state._erreurs?.find(e => e.index===i);
-      const couleur = LABELS_ERREUR[e?.type]?.couleur || 'rouge';
-      const label   = LABELS_ERREUR[e?.type]?.label   || '';
-      return `<span class="mot-erreur mot-erreur-${couleur}" title="${label} — attendu : ${attendu}">${mot||'▢'}</span>`;
+  if (!state._motsSaisie || !state._erreurs) return;
+  // Construire un set des tokens erronés (par leur forme saisie)
+  const erreursParSaisie = new Map();
+  state._erreurs.forEach(e => {
+    if (e.saisi) erreursParSaisie.set(normaliser(e.saisi), e);
+  });
+
+  const html = state._motsSaisie.map(mot => {
+    const e = erreursParSaisie.get(normaliser(mot));
+    if (e) {
+      const couleur = LABELS_ERREUR[e.type]?.couleur || 'rouge';
+      const label   = LABELS_ERREUR[e.type]?.label   || '';
+      return `<span class="mot-erreur mot-erreur-${couleur}" title="${label} — attendu : ${e.attendu}">${mot}</span>`;
     }
     return `<span class="mot-ok">${mot}</span>`;
   }).join(' ');
+
   ajouterIndice(zone, 2, `Erreurs soulignées :<br><div class="phrase-soulignee">${html}</div>`);
   ajouterHistorique('Indice : soulignement', 'indice', false);
 }
