@@ -3,15 +3,65 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Grammaire en Couleurs</title>
-  <!-- annotation_corpus.js : base de correction -->
-  <script src="annotation_corpus.js"></script>
-  <!-- data.js : corpus de phrases (racine du dépôt) -->
-  <script src="../data.js"></script>
+  <title>Grammaire en Couleurs — FLE/FLS</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <p>Application en développement — Mars 2026</p>
+  <header>
+    <h1>🎨 Grammaire en Couleurs</h1>
+    <span class="sous-titre">FLE · FLS · Silent Way</span>
+  </header>
 
+  <div id="app">
+
+    <!-- Ligne 1 : Thèmes -->
+    <section class="carte-themes">
+      <h2>Choisis un thème</h2>
+      <div id="themes"></div>
+    </section>
+
+    <!-- Ligne 2 : trois colonnes -->
+    <div class="colonnes">
+
+      <!-- Col gauche : liste des phrases -->
+      <section class="carte-phrases" id="section-phrases">
+        <h2>Phrases</h2>
+        <div id="liste-phrases">
+          <p class="hint-vide">Sélectionne un thème.</p>
+        </div>
+      </section>
+
+      <!-- Col centrale : espace de travail -->
+      <section class="carte-travail" id="section-travail">
+        <div class="travail-scroll">
+
+          <!-- Zone 1 : tableau muet -->
+          <div class="zone-tableau">
+            <div id="tableau-gec"></div>
+          </div>
+
+          <!-- Zone 2 : mots à placer -->
+          <div class="zone-mots">
+            <div id="mots-phrase">
+              <p class="hint-vide">Sélectionne une phrase pour commencer.</p>
+            </div>
+          </div>
+
+          <!-- Zone 3 : feedback textuel discret -->
+          <div id="zone-feedback" class="zone-feedback"></div>
+
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <script src="../data.js"></script>
+  <script src="annotation_corpus.js"></script>
+  <script src="g1-tableau.js"></script>
+  <script src="g2-phrase.js"></script>
+  <script src="g3-drag.js"></script>
+  <script src="app-gram.js"></script>
 </body>
 </html>

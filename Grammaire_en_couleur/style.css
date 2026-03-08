@@ -1,0 +1,383 @@
+/* style.css — Grammaire en Couleurs FLE/FLS */
+
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&family=Lato:wght@400;700&display=swap');
+
+/* ─── Variables ─────────────────────────────────────────────────────────── */
+:root {
+  --bleu:        #2563EB;
+  --bleu-clair:  #EFF6FF;
+  --bleu-bord:   #BFDBFE;
+  --vert:        #16A34A;
+  --vert-clair:  #F0FFF4;
+  --rouge:       #DC2626;
+  --rouge-clair: #FEF2F2;
+  --orange:      #D97706;
+  --gris-1:      #1E293B;
+  --gris-2:      #475569;
+  --gris-3:      #94A3B8;
+  --gris-4:      #E2E8F0;
+  --gris-5:      #F8FAFC;
+  --blanc:       #FFFFFF;
+  --ombre-sm:    0 1px 4px rgba(0,0,0,0.07);
+  --ombre:       0 4px 16px rgba(0,0,0,0.09);
+  --rayon:       12px;
+  --fonte:       'Source Sans 3', sans-serif;
+  --fonte-mots:  'Lato', sans-serif;
+  --h-header:    60px;
+  --gap:         1rem;
+
+  /* Palette GEC */
+  --gec-nom:          #7AAF8A;
+  --gec-verbe:        #E8A868;
+  --gec-determinant:  #D4C060;
+  --gec-pronom:       #B07A8A;
+  --gec-adjectif:     #9B8EC4;
+  --gec-preposition:  #D07070;
+  --gec-adverbe:      #7A9BB5;
+  --gec-conjonction:  #7A8896;
+  --gec-interjection: #A8A8A0;
+  --gec-pivot:        #937898; /* moyenne pronom/adverbe */
+}
+
+/* ─── Reset & Base ──────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; overflow: hidden; }
+body {
+  font-family: var(--fonte);
+  background: #F1F5F9;
+  color: var(--gris-1);
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+/* ─── Header ────────────────────────────────────────────────────────────── */
+header {
+  height: var(--h-header);
+  background: var(--blanc);
+  border-bottom: 2px solid var(--gec-nom);
+  padding: 0 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  box-shadow: var(--ombre-sm);
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+}
+h1 { font-size: 1.35rem; font-weight: 700; color: var(--gris-1); }
+.sous-titre {
+  font-size: 0.72rem; color: var(--gris-3);
+  font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+}
+
+/* ─── Layout principal ──────────────────────────────────────────────────── */
+#app {
+  position: fixed;
+  top: var(--h-header); left: 0; right: 0; bottom: 0;
+  display: flex; flex-direction: column;
+  padding: var(--gap); gap: var(--gap);
+  overflow: hidden;
+}
+
+/* ─── Carte thèmes ──────────────────────────────────────────────────────── */
+.carte-themes {
+  background: var(--blanc);
+  border-radius: var(--rayon);
+  box-shadow: var(--ombre-sm);
+  padding: 0.85rem 1.2rem;
+  border-top: 3px solid var(--gec-nom);
+  flex-shrink: 0;
+}
+.carte-themes h2 {
+  font-size: 0.72rem; font-weight: 700; color: var(--gris-3);
+  text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.6rem;
+}
+#themes { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+
+.btn-theme {
+  font-family: var(--fonte); font-weight: 600; font-size: 0.88rem;
+  padding: 0.38rem 0.9rem 0.45rem;
+  border: 1.5px solid var(--gris-4); border-radius: 20px;
+  background: var(--blanc); color: var(--gris-2);
+  cursor: pointer; transition: all 0.15s;
+}
+.btn-theme:hover { background: var(--gris-5); border-color: var(--gris-3); }
+.btn-theme.actif {
+  background: var(--gec-nom); color: white;
+  border-color: var(--gec-nom);
+  box-shadow: 0 2px 8px rgba(122,175,138,0.4);
+}
+
+/* ─── Colonnes ──────────────────────────────────────────────────────────── */
+.colonnes {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: var(--gap);
+  flex: 1;
+  min-height: 0;
+}
+
+/* ─── Col gauche : liste phrases ────────────────────────────────────────── */
+.carte-phrases {
+  background: var(--blanc);
+  border-radius: var(--rayon);
+  box-shadow: var(--ombre-sm);
+  border-top: 3px solid var(--gec-adjectif);
+  display: flex; flex-direction: column; overflow: hidden;
+}
+.carte-phrases h2 {
+  font-size: 0.72rem; font-weight: 700; color: var(--gris-3);
+  text-transform: uppercase; letter-spacing: 0.1em;
+  padding: 0.85rem 1rem 0.5rem; flex-shrink: 0;
+}
+#liste-phrases {
+  flex: 1; overflow-y: auto;
+  padding: 0 0.6rem 0.6rem;
+}
+#liste-phrases::-webkit-scrollbar { width: 5px; }
+#liste-phrases::-webkit-scrollbar-thumb { background: var(--gris-4); border-radius: 3px; }
+
+.btn-phrase {
+  font-family: var(--fonte); font-size: 0.82rem; text-align: left;
+  padding: 0.38rem 0.6rem;
+  border: 1px solid transparent; border-radius: 7px;
+  background: transparent; color: var(--gris-2);
+  cursor: pointer; transition: all 0.12s;
+  width: 100%; display: flex; align-items: center;
+  gap: 0.45rem; margin-bottom: 0.15rem;
+}
+.btn-phrase:hover { background: var(--gris-5); border-color: var(--gris-4); }
+.btn-phrase.actif {
+  background: #F0FFF4; border-color: #86EFAC;
+  color: var(--gec-nom); font-weight: 600;
+}
+.btn-phrase.reussie { color: var(--vert); }
+
+.badge-num {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 18px; height: 18px; border-radius: 50%;
+  background: var(--gris-4); color: var(--gris-2);
+  font-size: 0.65rem; font-weight: 700; flex-shrink: 0;
+}
+.badge-ok {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 18px; height: 18px; border-radius: 50%;
+  background: var(--vert); color: white;
+  font-size: 0.65rem; font-weight: 800; flex-shrink: 0;
+}
+
+/* ─── Col centrale : espace de travail ──────────────────────────────────── */
+.carte-travail {
+  background: var(--blanc);
+  border-radius: var(--rayon);
+  box-shadow: var(--ombre-sm);
+  border-top: 3px solid var(--gec-verbe);
+  display: flex; flex-direction: column; overflow: hidden;
+}
+
+.travail-scroll {
+  flex: 1; overflow-y: auto;
+  padding: 1.2rem; display: flex;
+  flex-direction: column; gap: 1.2rem;
+}
+
+/* ─── Tableau GEC ───────────────────────────────────────────────────────── */
+.zone-tableau {
+  flex-shrink: 0;
+}
+
+#tableau-gec {
+  position: relative;
+  width: 100%;
+  height: 340px;
+  background: #FDFAF5;
+  border: 1px solid var(--gris-4);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: var(--ombre-sm);
+}
+
+/* Cases du tableau */
+.gec-case {
+  position: absolute;
+  border: 2px solid rgba(255,255,255,0.4);
+  border-radius: 4px;
+  cursor: default;
+  transition: box-shadow 0.2s, transform 0.2s;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 6px;
+  gap: 4px;
+  overflow: hidden;
+}
+
+/* Drag-over : la case accepte un mot */
+.gec-case.drag-over {
+  box-shadow: inset 0 0 0 3px rgba(255,255,255,0.8);
+  transform: scale(1.01);
+}
+
+/* Pulse : signal après N essais — indique la bonne case */
+@keyframes pulse-case {
+  0%   { box-shadow: inset 0 0 0 3px rgba(255,255,255,0.9), 0 0 0 0 rgba(255,255,255,0.6); }
+  50%  { box-shadow: inset 0 0 0 3px rgba(255,255,255,0.9), 0 0 0 8px rgba(255,255,255,0); }
+  100% { box-shadow: inset 0 0 0 3px rgba(255,255,255,0.9), 0 0 0 0 rgba(255,255,255,0); }
+}
+.gec-case.pulse {
+  animation: pulse-case 0.6s ease-out 3;
+}
+
+/* Case pivot : dégradé */
+.gec-case.pivot-pron-adv {
+  background: linear-gradient(135deg, var(--gec-pronom) 50%, var(--gec-adverbe) 50%);
+}
+.gec-case.pivot-det-prep {
+  background: linear-gradient(135deg, var(--gec-determinant) 50%, var(--gec-preposition) 50%);
+}
+
+/* Mots placés dans les cases */
+.mot-place {
+  background: rgba(255,255,255,0.85);
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-family: var(--fonte-mots);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--gris-1);
+  white-space: nowrap;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+}
+
+/* ─── Zone mots à placer ────────────────────────────────────────────────── */
+.zone-mots {
+  flex-shrink: 0;
+}
+
+#mots-phrase {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 0.8rem;
+  background: var(--gris-5);
+  border-radius: 8px;
+  border: 1px solid var(--gris-4);
+  min-height: 52px;
+}
+
+.mot-token {
+  font-family: var(--fonte-mots);
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 0.3rem 0.75rem;
+  background: var(--blanc);
+  border: 1.5px solid var(--gris-4);
+  border-radius: 20px;
+  cursor: grab;
+  transition: all 0.3s;
+  user-select: none;
+  color: var(--gris-1);
+  box-shadow: var(--ombre-sm);
+}
+.mot-token:hover { border-color: var(--gris-3); background: var(--gris-5); transform: translateY(-1px); }
+.mot-token.dragging { opacity: 0.4; cursor: grabbing; }
+.mot-token.place { display: none; }
+
+/* Clone volant pour l'animation de retour */
+.mot-volant {
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+  transform: none !important;
+}
+
+/* ─── Zone feedback ─────────────────────────────────────────────────────── */
+.zone-feedback {
+  min-height: 32px;
+  font-size: 0.82rem;
+  color: var(--gris-3);
+  font-style: italic;
+  padding: 0.2rem 0;
+  transition: color 0.3s;
+}
+.zone-feedback.succes {
+  color: var(--vert);
+  font-style: normal;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+/* ─── Cache ─────────────────────────────────────────────────────────────── */
+.cache { display: none !important; }
+
+/* ─── Hint vide ─────────────────────────────────────────────────────────── */
+.hint-vide { color: var(--gris-3); font-size: 0.82rem; padding: 0.4rem 0.6rem; }
+
+/* ─── Responsive ────────────────────────────────────────────────────────── */
+@media (max-width: 680px) {
+  .colonnes { grid-template-columns: 1fr; overflow-y: auto; }
+  html, body { overflow: auto; }
+  #app { overflow-y: auto; position: static; padding-top: calc(var(--h-header) + var(--gap)); }
+  #tableau-gec { height: 320px; }
+}
+
+/* ─── Cases inactives (catégories absentes de la phrase) ────────────────── */
+.gec-case.inactive {
+  opacity: 0.22;
+  filter: saturate(0.2) brightness(1.1);
+  cursor: default !important;
+  pointer-events: none;
+}
+.gec-case.inactive.drag-over {
+  /* Ne jamais réagir */
+  box-shadow: none;
+  transform: none;
+}
+
+/* ─── Bulle de feedback contextuel ──────────────────────────────────────── */
+.bulle {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.55rem 0.9rem;
+  border-radius: 20px;
+  font-size: 0.84rem;
+  line-height: 1.4;
+  opacity: 0;
+  transition: opacity 0.35s;
+  width: fit-content;
+  max-width: 100%;
+}
+
+.bulle-encouragement {
+  background: #FFFBEB;
+  border: 1.5px solid #FCD34D;
+  color: #92400E;
+}
+
+.bulle-indice {
+  background: var(--bleu-clair);
+  border: 1.5px solid var(--bleu-bord);
+  color: #1E40AF;
+}
+
+.bulle-reprise {
+  background: #F5F3FF;
+  border: 1.5px solid #DDD6FE;
+  color: #5B21B6;
+}
+
+.bulle-btn {
+  font-family: var(--fonte);
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  border: 1.5px solid currentColor;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s;
+  flex-shrink: 0;
+}
+.bulle-btn:hover { background: rgba(255,255,255,0.6); }
