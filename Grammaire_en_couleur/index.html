@@ -15,20 +15,20 @@
 
   <div id="app">
 
-    <!-- Ligne 1 : Thèmes -->
-    <section class="carte-themes">
-      <h2>Choisis un thème</h2>
-      <div id="themes"></div>
+    <!-- Ligne 1 : Sélecteur de niveaux -->
+    <section class="carte-niveaux" id="section-themes">
+      <h2>Choisis ton niveau</h2>
+      <div id="selecteur-niveaux"></div>
     </section>
 
-    <!-- Ligne 2 : trois colonnes -->
+    <!-- Ligne 2 : deux colonnes -->
     <div class="colonnes">
 
       <!-- Col gauche : liste des phrases -->
       <section class="carte-phrases" id="section-phrases">
         <h2>Phrases</h2>
         <div id="liste-phrases">
-          <p class="hint-vide">Sélectionne un thème.</p>
+          <p class="hint-vide">Sélectionne un niveau.</p>
         </div>
       </section>
 
@@ -59,9 +59,11 @@
 
   <script src="../data.js"></script>
   <script src="annotation_corpus.js"></script>
+  <script src="g0-progression.js"></script>
   <script src="g1-tableau.js"></script>
   <script src="g2-phrase.js"></script>
   <script src="g3-drag.js"></script>
+  <script src="g4-niveaux.js"></script>
   <script src="app-gram.js"></script>
 </body>
 </html>

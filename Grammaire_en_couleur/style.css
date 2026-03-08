@@ -381,3 +381,120 @@ h1 { font-size: 1.35rem; font-weight: 700; color: var(--gris-1); }
   flex-shrink: 0;
 }
 .bulle-btn:hover { background: rgba(255,255,255,0.6); }
+
+/* ─── Sélecteur de niveaux ───────────────────────────────────────────────── */
+.carte-niveaux {
+  background: var(--blanc);
+  border-radius: var(--rayon);
+  box-shadow: var(--ombre-sm);
+  padding: 0.85rem 1.2rem;
+  border-top: 3px solid var(--gec-verbe);
+  flex-shrink: 0;
+}
+.carte-niveaux h2 {
+  font-size: 0.72rem; font-weight: 700; color: var(--gris-3);
+  text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.6rem;
+}
+#selecteur-niveaux {
+  display: flex; flex-wrap: wrap; gap: 0.5rem;
+}
+
+.btn-niveau {
+  font-family: var(--fonte); font-size: 0.82rem;
+  display: flex; align-items: center; gap: 0.45rem;
+  padding: 0.35rem 0.8rem 0.4rem;
+  border: 1.5px solid var(--gris-4); border-radius: 20px;
+  background: var(--blanc); color: var(--gris-2);
+  cursor: pointer; transition: all 0.15s;
+  flex-direction: row; position: relative;
+  overflow: hidden;
+}
+.btn-niveau:hover:not(:disabled) { border-color: var(--gris-3); background: var(--gris-5); }
+.btn-niveau.actuel {
+  border-color: var(--gec-verbe);
+  background: #FFF7ED;
+  color: var(--gris-1);
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(232,168,104,0.3);
+}
+.btn-niveau.complet { border-color: var(--vert); color: var(--vert); }
+.btn-niveau.verrouille { opacity: 0.4; cursor: not-allowed; }
+
+.niveau-badge {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 20px; height: 20px; border-radius: 50%;
+  background: var(--gris-4); color: var(--gris-2);
+  font-size: 0.68rem; font-weight: 800; flex-shrink: 0;
+}
+.btn-niveau.actuel .niveau-badge { background: var(--gec-verbe); color: white; }
+.btn-niveau.complet .niveau-badge { background: var(--vert); color: white; }
+
+.niveau-label { font-weight: 600; }
+
+.niveau-cat {
+  font-size: 0.72rem; font-weight: 700;
+  padding: 0.1rem 0.45rem; border-radius: 10px;
+  border: 1.5px solid; background: rgba(255,255,255,0.6);
+  text-transform: lowercase;
+}
+
+.niveau-barre {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  height: 3px; background: var(--gris-4);
+}
+.niveau-barre-fill {
+  height: 100%; border-radius: 0 2px 2px 0;
+  transition: width 0.5s;
+  opacity: 0.7;
+}
+
+/* ─── En-tête de liste de palier ─────────────────────────────────────────── */
+.palier-entete {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0.5rem 0.6rem 0.6rem;
+  border-bottom: 1px solid var(--gris-4);
+  margin-bottom: 0.3rem;
+}
+.palier-titre {
+  font-size: 0.78rem; font-weight: 700; color: var(--gris-2);
+}
+.btn-retour-niveaux {
+  font-family: var(--fonte); font-size: 0.72rem; font-weight: 600;
+  color: var(--gris-3); background: none; border: none;
+  cursor: pointer; padding: 0; transition: color 0.15s;
+}
+.btn-retour-niveaux:hover { color: var(--gris-1); }
+
+/* Points de difficulté sur chaque phrase */
+.phrase-diff {
+  margin-left: auto; font-size: 0.72rem;
+  color: var(--gris-3); letter-spacing: -1px;
+  flex-shrink: 0;
+}
+
+/* ─── Filtres thèmes dans un palier ──────────────────────────────────────── */
+.filtres-themes {
+  display: flex; flex-wrap: wrap; gap: 0.3rem;
+  padding: 0.5rem 0.6rem 0.4rem;
+  border-bottom: 1px solid var(--gris-4);
+}
+.btn-filtre {
+  font-family: var(--fonte); font-size: 0.74rem; font-weight: 600;
+  padding: 0.2rem 0.6rem; border-radius: 12px;
+  border: 1.5px solid var(--gris-4);
+  background: transparent; color: var(--gris-3);
+  cursor: pointer; transition: all 0.12s;
+}
+.btn-filtre:hover { border-color: var(--gris-3); color: var(--gris-2); }
+.btn-filtre.actif {
+  background: var(--gec-nom); border-color: var(--gec-nom);
+  color: white;
+}
+
+/* Tag thème sur chaque phrase (vue Tous) */
+.phrase-theme-tag {
+  margin-left: auto; font-size: 0.68rem; font-weight: 700;
+  color: var(--gris-3); text-transform: uppercase;
+  letter-spacing: 0.06em; flex-shrink: 0;
+  white-space: nowrap;
+}

@@ -40,6 +40,7 @@ function gererDrop(motIndexStr, catCible) {
       const doitReprendre = erreursTotal >= SEUIL_REPRISE && reprises < 2;
       setTimeout(() => {
         remettreMotsEnOrdre(tokens, () => {
+          onPhraseComplete();
           if (doitReprendre) {
             proposerReprise();
           } else {
