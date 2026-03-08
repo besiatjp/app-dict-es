@@ -172,10 +172,10 @@ function donnerIndice() {
   const saisie       = document.getElementById('champ-saisie').value;
   const saisiePropre = nettoyerTexte(saisie);
   const motsSaisie   = tokeniser(saisiePropre);
-  const motsOriginal = tokeniser(nettoyerTexte(state.phraseOriginale));
+  const motsOriginal = tokeniser(nettoyerOriginal(state.phraseOriginale));
 
   // Succès entre deux indices ?
-  if (normaliser(saisiePropre) === normaliser(nettoyerTexte(state.phraseOriginale))) {
+  if (normaliser(saisiePropre) === normaliser(nettoyerOriginal(state.phraseOriginale))) {
     const zone = document.getElementById('zone-resultat');
     enregistrerTentative(state.theme, state.phraseIndex, true, state.indicesCourants, []);
     rafraichirListePhrases(state.theme); construireThemes();
@@ -185,14 +185,8 @@ function donnerIndice() {
     rendreHistorique(); return;
   }
 
-  // Recalculer les erreurs
-  const nouvellesErreurs = [];
-  for (let i = 0; i < motsOriginal.length; i++) {
-    const mo = motsOriginal[i], ms = motsSaisie[i] || '';
-    if (normaliser(mo) !== normaliser(ms)) {
-      nouvellesErreurs.push({ index: i, attendu: mo, saisi: ms, ...classerErreur(mo, ms) });
-    }
-  }
+  // Recalculer les erreurs via LCS
+  const nouvellesErreurs = extraireErreursAlignes(motsSaisie, motsOriginal);
 
   // Marquer les erreurs corrigées dans l'historique
   if (state._erreurs) {

@@ -169,13 +169,7 @@ function afficherMessage(zone, type, texte) {
 }
 
 function afficherAnalyse(zone, motsSaisie, motsOriginal) {
-  const erreurs = [];
-  for (let i = 0; i < motsOriginal.length; i++) {
-    const mo = motsOriginal[i], ms = motsSaisie[i] || '';
-    if (normaliser(mo) !== normaliser(ms)) {
-      erreurs.push({ index: i, attendu: mo, saisi: ms, ...classerErreur(mo, ms) });
-    }
-  }
+  const erreurs = extraireErreursAlignes(motsSaisie, motsOriginal);
   if (erreurs.length === 0) {
     const msg = 'Les mots semblent corrects — vérifie la ponctuation et les accents.';
     afficherMessage(zone, 'attention', msg); ajouterHistorique(msg, 'attention', false); return;

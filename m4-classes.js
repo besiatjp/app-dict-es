@@ -180,6 +180,7 @@ const LABELS_ERREUR = {
   inf_participe:          { label: 'infinitif → participe', couleur: 'violet' },
   participe_inf:          { label: 'participe → infinitif', couleur: 'violet' },
   orthographe:            { label: 'orthographe',           couleur: 'rouge'  },
+  en_trop:                { label: 'mot en trop',           couleur: 'rouge'  },
 };
 
 // ── Classifieur principal ─────────────────────────────────────────────────
