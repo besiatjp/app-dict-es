@@ -1,10 +1,12 @@
 // m3-alignement.js — Module 3 : Alignement LCS des tokens
-// Dépendances : m1-nettoyage.js (normaliser, supprimeAccents), m2-tokens.js (tokeniser)
-// Utilisé quand le compte de mots est correct mais le découpage peut différer
+// Dépendances : m1-nettoyage.js (normaliser), m4-classes.js (classerErreur)
+
+// ── Normalisation pour le LCS (sans ponctuation) ──────────────────────────
+function normaliserLCS(t) {
+  return normaliser(t).replace(/[.,;:!?«»"'()\-]/g, '').trim();
+}
 
 // ── LCS sur tokens normalisés ─────────────────────────────────────────────
-// Retourne la longueur de la sous-séquence commune la plus longue
-
 function lcsLongueur(as, bs) {
   const m = as.length, n = bs.length;
   const dp = Array.from({length: m+1}, () => new Array(n+1).fill(0));
@@ -16,26 +18,23 @@ function lcsLongueur(as, bs) {
   return dp;
 }
 
-// Remonte le tableau LCS pour produire les paires d'alignement
-// Chaque paire : { type: 'match'|'saisie'|'original', s?, o?, si?, oi? }
-// si/oi = index dans le tableau original pour retrouver le token brut
-
 function lcsAligner(tokSaisie, tokOriginal) {
-  const ns = tokSaisie.map(t => normaliser(t));
-  const no = tokOriginal.map(t => normaliser(t));
+  // Normaliser sans ponctuation pour le LCS — "quartier." matche "quartier"
+  const ns = tokSaisie.map(normaliserLCS);
+  const no = tokOriginal.map(normaliserLCS);
   const dp = lcsLongueur(ns, no);
   const paires = [];
   let i = tokSaisie.length, j = tokOriginal.length;
 
   while (i > 0 || j > 0) {
-    if (i > 0 && j > 0 && ns[i-1] === no[j-1]) {
-      paires.unshift({ type: 'match', s: tokSaisie[i-1], o: tokOriginal[j-1], si: i-1, oi: j-1 });
+    if (i > 0 && j > 0 && ns[i-1] === no[j-1] && ns[i-1] !== '') {
+      paires.unshift({ type: 'match', s: tokSaisie[i-1], o: tokOriginal[j-1] });
       i--; j--;
     } else if (j > 0 && (i === 0 || dp[i][j-1] >= dp[i-1][j])) {
-      paires.unshift({ type: 'original', o: tokOriginal[j-1], oi: j-1 });
+      paires.unshift({ type: 'original', o: tokOriginal[j-1] });
       j--;
     } else {
-      paires.unshift({ type: 'saisie', s: tokSaisie[i-1], si: i-1 });
+      paires.unshift({ type: 'saisie', s: tokSaisie[i-1] });
       i--;
     }
   }
@@ -43,10 +42,8 @@ function lcsAligner(tokSaisie, tokOriginal) {
 }
 
 // ── Fusion des élisions manquantes ────────────────────────────────────────
-// Détecte les patterns : token 'saisie' court (élision) + token 'match' suivant
-// dont la concaténation correspond à un token 'original' manquant
-
-const PREFIXES_ELISION = new Set(['j', 'l', 'd', 'm', 't', 's', 'n', 'c', 'qu', 'lorsqu', 'jusque', 'puisqu', 'quoiqu']);
+// Détecte : saisie[préfixe] + saisie[suite] + original[préfixe'suite]
+// → fusionne en une erreur apostrophe_manquante
 
 function fusionnerElisionsAlignement(paires) {
   const result = [];
@@ -54,42 +51,30 @@ function fusionnerElisionsAlignement(paires) {
   while (i < paires.length) {
     const p = paires[i];
 
-    // Cherche : token 'original' manquant contenant une apostrophe
-    // suivi ou précédé d'un token 'saisie' qui est le préfixe sans apostrophe
-    if (p.type === 'original' && p.o.includes("'")) {
-      const parts = p.o.split("'");
-      const prefixe = normaliser(parts[0]);
+    if (p.type === 'original' && normaliser(p.o).includes("'")) {
+      const parts   = normaliser(p.o).split("'");
+      const prefixe = parts[0];
+      const suite   = parts.slice(1).join("'");
+      const avant1  = result[result.length - 1];
+      const avant2  = result[result.length - 2];
+      const suivant = paires[i + 1];
 
-      // Cas : le préfixe est un token 'saisie' isolé juste avant
-      const dernier = result[result.length - 1];
-      if (dernier && dernier.type === 'saisie' && normaliser(dernier.s) === prefixe) {
-        // Fusion : remplace le dernier 'saisie' par une erreur apostrophe
-        result.pop();
-        // Cherche le token 'match' ou 'saisie' correspondant au reste
-        const suite = parts.slice(1).join("'");
-        result.push({
-          type: 'erreur_apostrophe',
-          s: dernier.s + ' ' + (paires[i+1]?.s || suite),
-          o: p.o,
-          erreur: { type: 'apostrophe_manquante', detail: 'apostrophe manquante' }
-        });
-        // Consommer aussi le token suivant si c'est un match sur le reste
-        if (paires[i+1] && paires[i+1].type === 'match' &&
-            normaliser(paires[i+1].s) === normaliser(suite)) {
-          i += 2; continue;
-        }
+      // Cas A : result[-2]=saisie[prefixe] + result[-1]=saisie[suite] + original
+      if (avant2 && avant2.type === 'saisie' && normaliserLCS(avant2.s) === prefixe &&
+          avant1 && avant1.type === 'saisie' && normaliserLCS(avant1.s) === suite) {
+        result.pop(); result.pop();
+        result.push({ type: 'erreur', s: avant2.s + ' ' + avant1.s, o: p.o,
+          erreurType: 'apostrophe_manquante', erreurDetail: 'apostrophe manquante' });
         i++; continue;
       }
 
-      // Cas : le préfixe est un token 'saisie' isolé juste après
-      if (paires[i+1] && paires[i+1].type === 'saisie' && normaliser(paires[i+1].s) === prefixe) {
-        const suite = parts.slice(1).join("'");
-        result.push({
-          type: 'erreur_apostrophe',
-          s: paires[i+1].s + ' ' + (paires[i+2]?.s || suite),
-          o: p.o,
-          erreur: { type: 'apostrophe_manquante', detail: 'apostrophe manquante' }
-        });
+      // Cas B : result[-1]=saisie[prefixe] + original + suivant=saisie[suite] ou match[suite]
+      if (avant1 && avant1.type === 'saisie' && normaliserLCS(avant1.s) === prefixe &&
+          suivant && (suivant.type === 'saisie' || suivant.type === 'match') &&
+          normaliserLCS(suivant.s) === suite) {
+        result.pop();
+        result.push({ type: 'erreur', s: avant1.s + ' ' + suivant.s, o: p.o,
+          erreurType: 'apostrophe_manquante', erreurDetail: 'apostrophe manquante' });
         i += 2; continue;
       }
     }
@@ -103,46 +88,44 @@ function fusionnerElisionsAlignement(paires) {
 // ── Extraction des erreurs depuis les paires alignées ─────────────────────
 
 function extraireErreursAlignes(tokSaisie, tokOriginal) {
-  const paires = lcsAligner(tokSaisie, tokOriginal);
+  const paires  = lcsAligner(tokSaisie, tokOriginal);
   const pairesF = fusionnerElisionsAlignement(paires);
   const erreurs = [];
-  let indexEffectif = 0;
+  let idx = 0;
 
   pairesF.forEach(p => {
     if (p.type === 'match') {
-      indexEffectif++;
+      // Même token dans les deux — vérifier quand même accent/ponctuation
+      if (normaliser(p.s) !== normaliser(p.o)) {
+        erreurs.push({ index: idx, attendu: p.o, saisi: p.s, ...classerErreur(p.o, p.s) });
+      }
+      idx++;
       return;
     }
-    if (p.type === 'erreur_apostrophe') {
+
+    if (p.type === 'erreur') {
+      // Erreur d'apostrophe fusionnée
       erreurs.push({
-        index: indexEffectif,
+        index: idx,
         attendu: p.o,
         saisi: p.s,
-        ...p.erreur
+        type: p.erreurType || 'apostrophe_manquante',
+        detail: p.erreurDetail || 'apostrophe manquante'
       });
-      indexEffectif++;
+      idx++;
       return;
     }
+
     if (p.type === 'original') {
-      // Mot manquant dans la saisie
-      erreurs.push({
-        index: indexEffectif,
-        attendu: p.o,
-        saisi: '',
-        ...classerErreur(p.o, '')
-      });
-      indexEffectif++;
+      // Token attendu absent de la saisie
+      erreurs.push({ index: idx, attendu: p.o, saisi: '', ...classerErreur(p.o, '') });
+      idx++;
       return;
     }
+
     if (p.type === 'saisie') {
-      // Mot en trop — on l'attache à l'index courant
-      erreurs.push({
-        index: indexEffectif,
-        attendu: '',
-        saisi: p.s,
-        type: 'en_trop',
-        detail: `"${p.s}" en trop`
-      });
+      // Token en trop dans la saisie (ne devrait pas arriver si compte de mots vérifié avant)
+      erreurs.push({ index: idx, attendu: '', saisi: p.s, type: 'en_trop', detail: `"${p.s}" en trop` });
       return;
     }
   });
