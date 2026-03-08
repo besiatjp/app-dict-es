@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nouvelles Dictées — FLE/FLS</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header>
+    <h1>✏️ Nouvelles Dictées</h1>
+    <span class="sous-titre">FLE · FLS · Silent Way</span>
+    <button id="btn-stats" class="btn-stats-header">📊 Stats</button>
+  </header>
+
+  <!-- Panneau statistiques -->
+  <div id="panneau-stats" class="cache">
+    <div class="stats-fond"></div>
+    <div class="stats-panneau">
+      <div class="stats-entete">
+        <h2>📊 Mes statistiques</h2>
+        <button class="btn-fermer" id="btn-fermer-stats">✕</button>
+      </div>
+      <div id="contenu-stats"></div>
+    </div>
+  </div>
+
+  <div id="app">
+
+    <!-- Ligne 1 : Thèmes -->
+    <section class="carte-themes">
+      <h2>Choisis un thème</h2>
+      <div id="themes"></div>
+    </section>
+
+    <!-- Ligne 2 : trois colonnes -->
+    <div class="colonnes">
+
+      <!-- Col 1 : liste des phrases -->
+      <section class="carte-phrases" id="section-phrases">
+        <h2>Phrases</h2>
+        <div id="liste-phrases">
+          <p class="hint-vide">Sélectionne un thème.</p>
+        </div>
+      </section>
+
+      <!-- Col 2 : espace de travail -->
+      <section class="carte-travail" id="section-travail">
+        <h2>Espace de travail</h2>
+        <div class="travail-scroll">
+
+          <div id="indicateur-phrase" class="indicateur-vide">
+            Choisis une phrase pour commencer.
+          </div>
+
+          <div class="groupe-boutons">
+            <button id="btn-ecouter"  class="btn-action btn-ecouter">
+              <span class="icone">▶</span> Écouter
+            </button>
+            <label class="vitesse-wrap" title="Vitesse de lecture">
+              <span class="vitesse-icone">🐢</span>
+              <input type="range" id="ctrl-vitesse" min="0.5" max="1.5" step="0.1" value="1">
+              <span class="vitesse-icone">🐇</span>
+              <span id="valeur-vitesse">×1.0</span>
+            </label>
+            <button id="btn-verifier" class="btn-action btn-verifier">✓ Vérifier</button>
+            <button id="btn-indice"   class="btn-action btn-indice cache">Indice</button>
+            <button id="btn-contexte" class="btn-action btn-contexte cache">Contexte</button>
+            <button id="btn-reset"    class="btn-action btn-reset">↺ Recommencer</button>
+          </div>
+
+          <div class="zone-saisie">
+            <label for="champ-saisie">Écris la phrase ici :</label>
+            <textarea id="champ-saisie"
+              placeholder="Écris ce que tu entends…"
+              autocomplete="off" autocorrect="off"
+              autocapitalize="off" spellcheck="false"></textarea>
+          </div>
+
+          <div id="zone-resultat"></div>
+          <div id="zone-indices"></div>
+
+        </div>
+      </section>
+
+      <!-- Col 3 : historique des feedbacks -->
+      <section class="carte-historique">
+        <h2>Feedbacks</h2>
+        <div id="zone-historique">
+          <p class="histo-vide">Les feedbacks apparaîtront ici.</p>
+        </div>
+      </section>
+
+    </div>
+    <footer class="disclaimer">
+      La correction est automatique et peut parfois se tromper. En cas de doute, fiez-vous à votre enseignant.
+    </footer>
+  </div>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
