@@ -431,6 +431,17 @@ h1 {
   border-left: 3px solid var(--vert);
 }
 
+/* Cercle rose pour signaler une erreur de ponctuation dans l'indice 3 */
+.ponct-cercle {
+  display: inline-block;
+  background: rgba(220, 38, 38, 0.08);
+  border: 1.5px solid rgba(220, 38, 38, 0.35);
+  border-radius: 12px;
+  padding: 0 3px;
+  margin: 0 1px;
+  color: var(--vert);
+}
+
 .liste-contexte {
   margin-top: 0.35rem;
   padding-left: 1.1rem;
@@ -602,88 +613,4 @@ h1 {
 }
 @media (max-width: 680px) {
   .colonnes { grid-template-columns: 1fr; }
-}
-
-/* ─── Cercles ponctuation (overlays positionnés via JS/getBoundingClientRect) ── */
-/* Les styles sont inlinés dans poserOverlays() — rien à définir ici. */
-.pc-tok { display: inline; }
-
-/* ─── Disclaimer ─────────────────────────────────────────────────────────── */
-.disclaimer {
-  text-align: center;
-  font-size: 0.72rem;
-  color: var(--gris-3);
-  padding: 0.6rem 1rem;
-  flex-shrink: 0;
-}
-
-/* ─── Curseur de vitesse ─────────────────────────────────────────────────── */
-.vitesse-wrap {
-  display: flex;
-  align-items: center;
-  gap: 0.3rem;
-  background: var(--gris-5);
-  border: 1.5px solid var(--gris-4);
-  border-radius: 20px;
-  padding: 0.3rem 0.7rem;
-  cursor: default;
-}
-.vitesse-icone { font-size: 0.85rem; line-height: 1; }
-#ctrl-vitesse {
-  -webkit-appearance: none;
-  width: 80px;
-  height: 4px;
-  border-radius: 2px;
-  background: var(--bleu-bord);
-  outline: none;
-  cursor: pointer;
-}
-#ctrl-vitesse::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  width: 14px; height: 14px;
-  border-radius: 50%;
-  background: var(--bleu);
-  cursor: pointer;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
-}
-#valeur-vitesse {
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: var(--bleu);
-  min-width: 2.8em;
-  text-align: right;
-}
-
-/* ─── Navigation post-succès ─────────────────────────────────────────────── */
-.succes-actions {
-  margin-top: 0.5rem;
-  display: flex;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-}
-.btn-suite {
-  font-family: var(--fonte);
-  font-weight: 700;
-  font-size: 0.88rem;
-  padding: 0.45rem 1.1rem;
-  border: none;
-  border-radius: 20px;
-  background: var(--vert);
-  color: white;
-  cursor: pointer;
-  transition: all 0.15s;
-}
-.btn-suite:hover { filter: brightness(1.08); transform: translateY(-1px); }
-
-.succes-theme-complet {
-  margin-top: 0.4rem;
-  font-size: 0.88rem;
-  font-weight: 600;
-  color: var(--vert);
-}
-.message-tous-themes {
-  font-size: 0.95rem;
-  font-weight: 700;
-  color: var(--vert);
-  padding: 0.4rem 0;
 }
