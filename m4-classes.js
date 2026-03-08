@@ -138,6 +138,16 @@ const PAIRES_ACCORD = new Set([
   'il|elle', 'il|ils', 'il|elles', 'elle|elles', 'ils|elles',
   'celui|celle', 'celui|ceux', 'celle|celles', 'ceux|celles',
   'lequel|laquelle', 'lequel|lesquels', 'laquelle|lesquelles',
+  // Adjectifs thème Quartier
+  'animé|animée', 'animé|animés', 'animé|animées', 'animée|animées',
+  'piéton|piétonne', 'piéton|piétons', 'piétonne|piétonnes', 'piéton|piétonnes',
+  'ancien|ancienne', 'ancien|anciens', 'ancien|anciennes', 'ancienne|anciennes', 'anciens|anciennes',
+  'moderne|modernes',
+  'large|larges',
+  'calme|calmes',
+  'principal|principale', 'principal|principaux', 'principale|principales', 'principaux|principales',
+  'desservi|desservie', 'desservi|desservis', 'desservie|desservies',
+  'interdit|interdite', 'interdit|interdits', 'interdite|interdites',
 ]);
 
 function estPaireAccord(a, s) {
