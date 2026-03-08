@@ -1,5 +1,5 @@
 // data.js — Corpus des dictées (FLE/FLS — Nouvelles Dictées)
-// Thèmes : Maison, Chambre, Salon, Habitation
+// Thèmes : Maison, Chambre, Salon, Habitation, Quartier
 
 const DICTEES = {
   Maison: [
@@ -10,7 +10,7 @@ const DICTEES = {
     "En réalité, il y a deux chambres à coucher.",
     "Il y a aussi un salon et une cuisine.",
     "Les pièces de service ne sont pas comptées dans les pièces principales.",
-    "La cuisine, l'office, entre autres, sont des pièces de service.",
+    "La cuisine, l'office, etcaetera, sont des pièces de service.",
     "La salle de bains est séparée des W.C.",
     "Dans la salle à manger, nous prenons nos repas.",
     "Nous dormons dans les chambres à coucher.",
@@ -105,5 +105,32 @@ const DICTEES = {
     "Chaque appartement a sa propre entrée.",
     "Le loyer est la somme que l'on paie chaque mois pour habiter un logement.",
     "Les propriétaires louent leurs biens à des locataires."
+  ],
+  Quartier: [
+    "J'habite dans un quartier.",
+    "Mon quartier est calme.",
+    "Il y a une rue principale.",
+    "La rue est large et animée.",
+    "Il y a des trottoirs de chaque côté.",
+    "Dans mon quartier, il y a des commerces.",
+    "La boulangerie est au coin de la rue.",
+    "L'épicerie est ouverte tous les jours.",
+    "Il y a aussi une pharmacie et un café.",
+    "Le café est souvent un lieu de rencontre pour les habitants.",
+    "Les voisins se saluent parfois dans la rue.",
+    "Les enfants jouent souvent dans le square.",
+    "Le square est entouré d'arbres et de bancs.",
+    "Une fontaine se trouve au centre du square.",
+    "Quand il fait beau, les personnes âgées s'assoient sur les bancs.",
+    "Le marché a lieu deux fois par semaine.",
+    "On y trouve des fruits, des légumes et des fleurs.",
+    "Les commerçants connaissent bien leurs clients.",
+    "Quand il pleut, les rues se vident rapidement.",
+    "Certaines rues sont piétonnes et interdites aux voitures.",
+    "Le soir, les terrasses des cafés sont souvent très animées.",
+    "Le quartier est desservi par plusieurs lignes de bus.",
+    "La mairie se trouve à quelques minutes à pied.",
+    "Parfois, des musiciens jouent dans la rue.",
+    "Les immeubles anciens côtoient souvent les constructions modernes."
   ]
 };
