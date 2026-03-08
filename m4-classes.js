@@ -87,6 +87,25 @@ const LEXIQUE_VERBAL = {
   "séparée":   {type:"part", formes:["séparer"]},
   "préférée":  {type:"part", formes:["préférer"]},"préférés": {type:"part", formes:["préférer"]},
   "recouvert": {type:"part", formes:["recouvrir"]},
+  // Thème Quartier
+  "vider":      {type:"inf", formes:["vidé","vidée","vidés","vidées"]},
+  "desservir":  {type:"inf", formes:["desservi","desservie","desservis","desservies"]},
+  "côtoyer":    {type:"inf", formes:["côtoyé","côtoyée","côtoyés","côtoyées"]},
+  "jouer":      {type:"inf", formes:["joué","jouée","joués","jouées"]},
+  "trouver":    {type:"inf", formes:["trouvé","trouvée","trouvés","trouvées"]},
+  "connaître":  {type:"inf", formes:["connu","connue","connus","connues"]},
+  "saluer":     {type:"inf", formes:["salué","saluée","salués","saluées"]},
+  "entretenir": {type:"inf", formes:["entretenu","entretenue","entretenus","entretenues"]},
+  "relier":     {type:"inf", formes:["relié","reliée","reliés","reliées"]},
+  "vidé":       {type:"part", formes:["vider"]},   "vidée":      {type:"part", formes:["vider"]},
+  "desservi":   {type:"part", formes:["desservir"]},"desservie":  {type:"part", formes:["desservir"]},
+  "côtoyé":     {type:"part", formes:["côtoyer"]},
+  "joué":       {type:"part", formes:["jouer"]},   "jouée":      {type:"part", formes:["jouer"]},
+  "trouvé":     {type:"part", formes:["trouver"]}, "trouvée":    {type:"part", formes:["trouver"]},
+  "connu":      {type:"part", formes:["connaître"]},"connue":    {type:"part", formes:["connaître"]},
+  "salué":      {type:"part", formes:["saluer"]},  "saluée":     {type:"part", formes:["saluer"]},
+  "entretenu":  {type:"part", formes:["entretenir"]},"entretenue":{type:"part", formes:["entretenir"]},
+  "relié":      {type:"part", formes:["relier"]},  "reliée":     {type:"part", formes:["relier"]},
 };
 
 // ── Paires d'accord connues ───────────────────────────────────────────────
