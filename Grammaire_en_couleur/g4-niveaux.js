@@ -82,7 +82,7 @@ function construireSelecteurNiveaux() {
 
     const label = document.createElement('span');
     label.className = 'niveau-label';
-    label.textContent = palier.label;
+    label.textContent = 'Niveau ' + palier.num;
 
     btn.appendChild(badge);
     btn.appendChild(label);
@@ -314,3 +314,21 @@ function proposerPalierSuivant(palierSuivant) {
     }
   );
 }
+
+// Remplacement de proposerPalierSuivant — utilise MESSAGES_FIN_PALIER
+(function() {
+  const _orig = proposerPalierSuivant;
+  window.proposerPalierSuivant = function(palierSuivant) {
+    const msg = MESSAGES_FIN_PALIER[gramState.palierActuel?.num];
+    if (!msg) { _orig(palierSuivant); return; }
+    afficherBulle(
+      msg.bilan + ' ' + msg.invite,
+      'reprise',
+      palierSuivant ? () => {
+        masquerBulle();
+        selectionnerPalier(palierSuivant.num, null);
+        construireSelecteurNiveaux();
+      } : null
+    );
+  };
+})();

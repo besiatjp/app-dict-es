@@ -2,21 +2,45 @@
 // Généré automatiquement — ne pas modifier à la main
 
 const ORDRE_CATEGORIES = [
-  "nom",
-  "verbe",
-  "déterminant",
-  "pronom",
-  "préposition",
-  "adjectif",
-  "adverbe",
-  "conjonction",
-  "pivot"
+  "nom", "verbe", "déterminant", "pronom",
+  "préposition", "adjectif", "adverbe", "conjonction", "pivot"
 ];
+
+// Messages de fin de palier — ton chaleureux, spécifique, sans condescendance
+const MESSAGES_FIN_PALIER = {
+  3: {
+    bilan: "Tu viens de placer des noms, des verbes et des déterminants. Plus tard tu verras les verbes et les déterminants plus en détail — mais pour le moment tu t'en sors très bien !",
+    invite: "Prêt pour un autre niveau ?"
+  },
+  4: {
+    bilan: "Tu as ajouté les pronoms à ta palette. Ce sont eux qui remplacent les noms — tu commences à voir comment la langue évite les répétitions.",
+    invite: "On continue ?"
+  },
+  5: {
+    bilan: "Les prépositions sont partout : elles relient, situent, orientent. Tu les as trouvées. Il y en a encore beaucoup à explorer, mais tu as le bon réflexe.",
+    invite: "Prêt pour la suite ?"
+  },
+  6: {
+    bilan: "Les adjectifs donnent de la couleur aux noms. Tu les as bien repérés — et tu verras qu'ils s'accordent, mais ça c'est pour plus tard.",
+    invite: "On continue ?"
+  },
+  7: {
+    bilan: "Les adverbes modifient tout — les verbes, les adjectifs, d'autres adverbes. Tu as bien vu où ils se glissaient dans la phrase.",
+    invite: "Prêt pour un nouveau niveau ?"
+  },
+  8: {
+    bilan: "Les conjonctions assemblent, relient, opposent. Elles sont discrètes mais essentielles — et tu les as trouvées.",
+    invite: "On continue ?"
+  },
+  9: {
+    bilan: "Les pronoms adverbiaux y et en sont parmi les mots les plus fréquents du français — et parmi les plus difficiles à saisir. Tu t'en es bien sorti.",
+    invite: "Tu as exploré tout le tableau. Bravo."
+  },
+};
 
 const PALIERS = [
   {
     num: 3,
-    label: "Noms, verbes, déterminants",
     catNouvelle: "déterminant",
     catsActives: ["nom","verbe","déterminant"],
     phrases: [
@@ -26,7 +50,6 @@ const PALIERS = [
   },
   {
     num: 4,
-    label: "Les pronoms",
     catNouvelle: "pronom",
     catsActives: ["nom","verbe","déterminant","pronom"],
     phrases: [
@@ -41,7 +64,6 @@ const PALIERS = [
   },
   {
     num: 5,
-    label: "Les prépositions",
     catNouvelle: "préposition",
     catsActives: ["nom","verbe","déterminant","pronom","préposition"],
     phrases: [
@@ -73,7 +95,6 @@ const PALIERS = [
   },
   {
     num: 6,
-    label: "Les adjectifs",
     catNouvelle: "adjectif",
     catsActives: ["nom","verbe","déterminant","pronom","préposition","adjectif"],
     phrases: [
@@ -99,7 +120,6 @@ const PALIERS = [
   },
   {
     num: 7,
-    label: "Les adverbes",
     catNouvelle: "adverbe",
     catsActives: ["nom","verbe","déterminant","pronom","préposition","adjectif","adverbe"],
     phrases: [
@@ -129,7 +149,6 @@ const PALIERS = [
   },
   {
     num: 8,
-    label: "Les conjonctions",
     catNouvelle: "conjonction",
     catsActives: ["nom","verbe","déterminant","pronom","préposition","adjectif","adverbe","conjonction"],
     phrases: [
@@ -160,7 +179,6 @@ const PALIERS = [
   },
   {
     num: 9,
-    label: "Les pronoms adverbiaux",
     catNouvelle: "pivot",
     catsActives: ["nom","verbe","déterminant","pronom","préposition","adjectif","adverbe","conjonction","pivot"],
     phrases: [
