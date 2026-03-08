@@ -18,16 +18,19 @@ function fusionnerElisions(t) {
   return t.replace(re, (_, sep, el, suite) => `${sep}${el}'${suite}`);
 }
 
-// Nettoyage de la saisie brute
+// Nettoyage de la saisie apprenant — PAS de fusion d'élisions (apostrophe manquante = erreur)
 function nettoyerTexte(t) {
-  return fusionnerElisions(
-    t
-      .trim()
-      .replace(/\s*'\s*/g, "'")            // espace autour d'apostrophe : "j' ouvre" → "j'ouvre"
-      .replace(/\s+([,;:!?])/g, '$1')      // espace parasite avant ponctuation
-      .replace(/([,;:!?])(\w)/g, '$1 $2')  // espace manquant après ponctuation
-      .replace(/\s+/g, ' ')                // doubles espaces résiduels
-  );
+  return t
+    .trim()
+    .replace(/\s*'\s*/g, "'")            // espace autour d'apostrophe : "j' ouvre" → "j'ouvre"
+    .replace(/\s+([,;:!?])/g, '$1')      // espace parasite avant ponctuation
+    .replace(/([,;:!?])(\w)/g, '$1 $2')  // espace manquant après ponctuation
+    .replace(/\s+/g, ' ');               // doubles espaces résiduels
+}
+
+// Nettoyage de la phrase originale — avec fusion d'élisions pour normalisation interne
+function nettoyerOriginal(t) {
+  return fusionnerElisions(nettoyerTexte(t));
 }
 
 // Normalisation pour comparaison exacte (variantes incluses)

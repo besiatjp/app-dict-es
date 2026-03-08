@@ -107,7 +107,7 @@ function verifierPhrase() {
   const saisie       = document.getElementById('champ-saisie').value;
   const saisiePropre = nettoyerTexte(saisie);
   const motsSaisie   = tokeniser(saisiePropre);
-  const motsOriginal = tokeniser(nettoyerTexte(state.phraseOriginale));
+  const motsOriginal = tokeniser(nettoyerOriginal(state.phraseOriginale));
   const zone         = document.getElementById('zone-resultat');
   zone.innerHTML     = '';
 
@@ -123,7 +123,7 @@ function verifierPhrase() {
   document.getElementById('zone-indices').innerHTML = '';
   document.getElementById('btn-indice').textContent = 'Indice';
 
-  if (normaliser(saisiePropre) === normaliser(nettoyerTexte(state.phraseOriginale))) {
+  if (normaliser(saisiePropre) === normaliser(nettoyerOriginal(state.phraseOriginale))) {
     enregistrerTentative(state.theme, state.phraseIndex, true, state.indicesCourants, []);
     rafraichirListePhrases(state.theme); construireThemes();
     document.querySelectorAll('.btn-theme').forEach(b => b.classList.toggle('actif', b.dataset.theme===state.theme));
