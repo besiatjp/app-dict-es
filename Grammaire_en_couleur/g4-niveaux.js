@@ -80,17 +80,13 @@ function construireSelecteurNiveaux() {
     badge.className = 'niveau-badge';
     badge.textContent = debloque ? palier.num : '🔒';
 
-    const label = document.createElement('span');
-    label.className = 'niveau-label';
-    label.textContent = 'Niveau ' + palier.num;
 
     btn.appendChild(badge);
-    btn.appendChild(label);
 
     if (debloque && palier.catNouvelle) {
       const tag = document.createElement('span');
       tag.className = 'niveau-cat';
-      tag.textContent = palier.catNouvelle;
+      tag.textContent = '';
       tag.style.borderColor = couleurCat(palier.catNouvelle);
       tag.style.color = couleurCat(palier.catNouvelle);
       btn.appendChild(tag);
@@ -149,7 +145,7 @@ function construireListePalier(palier, themeActif) {
 
   const titre = document.createElement('span');
   titre.className = 'palier-titre';
-  titre.textContent = palier.label;
+  titre.textContent = '';
 
   entete.appendChild(btnRetour);
   entete.appendChild(titre);
