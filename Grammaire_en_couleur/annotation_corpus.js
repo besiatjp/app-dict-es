@@ -692,10 +692,10 @@ const CORPUS_ANNOTE = {
     },
 
     {
-      phrase: "Une jolie lustre éclaire toute la pièce.",
+      phrase: "Un joli lustre éclaire toute la pièce.",
       tokens: [
-        { mot: "Une", cat: "déterminant" },
-        { mot: "jolie", cat: "adjectif" },
+        { mot: "Un", cat: "déterminant" },
+        { mot: "joli", cat: "adjectif" },
         { mot: "lustre", cat: "nom" },
         { mot: "éclaire", cat: "verbe" },
         { mot: "toute", cat: "adjectif" },

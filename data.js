@@ -49,7 +49,7 @@ const DICTEES = {
     "Une bibliothèque occupe tout un pan de mur.",
     "Mes livres préférés y sont rangés par ordre alphabétique.",
     "Le plafond de ma chambre est haut.",
-    "Une jolie lustre éclaire toute la pièce.",
+    "Un joli lustre éclaire toute la pièce.",
     "La chambre est ma pièce préférée de la maison.",
     "J'y passe beaucoup de temps à lire et à me reposer.",
     "Parfois j'écoute de la musique dans ma chambre.",
