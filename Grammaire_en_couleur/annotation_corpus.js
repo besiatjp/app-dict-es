@@ -777,7 +777,7 @@ const CORPUS_ANNOTE = {
         { mot: "est", cat: "verbe" },
         { mot: "toujours", cat: "adverbe" },
         { mot: "bien", cat: "adverbe" },
-        { mot: "rangée", cat: "verbe" }
+        { mot: "rangée", cat: "adjectif" }
       ]
     },
 
