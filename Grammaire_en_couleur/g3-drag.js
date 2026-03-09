@@ -12,6 +12,7 @@ let erreursTotal  = 0;    // erreurs cumulées sur la phrase courante
 let reprises      = 0;    // nombre de fois qu'on a refait cette phrase
 let timerHesit1   = null;
 let timerHesit2   = null;
+let animationEnCours = false; // verrou pendant l'animation de retour
 
 // ── Gestion du drop ───────────────────────────────────────────────────────
 function gererDrop(motIndexStr, catCible) {
@@ -36,11 +37,18 @@ function gererDrop(motIndexStr, catCible) {
 
     if (tousLesMotsPlaces(tokens)) {
       clearTimersHesitation();
-      // Évaluer la fluidité → reprise si nécessaire
       const doitReprendre = erreursTotal >= SEUIL_REPRISE && reprises < 2;
+      // Capturer theme/index MAINTENANT avant tout clic possible
+      const themeFini   = gramState.theme;
+      const indexFini   = gramState.phraseIndex;
+      const palierFini  = gramState.palierActuel;
+      animationEnCours  = true;
+      bloquerListePhrases(true);
       setTimeout(() => {
         remettreMotsEnOrdre(tokens, () => {
-          onPhraseComplete();
+          animationEnCours = false;
+          bloquerListePhrases(false);
+          onPhraseComplete(themeFini, indexFini, palierFini);
           if (doitReprendre) {
             proposerReprise();
           } else {

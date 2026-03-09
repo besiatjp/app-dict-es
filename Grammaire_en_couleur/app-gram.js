@@ -21,9 +21,20 @@ function reinitialiserZoneTravail() {
   zone.innerHTML = '<p class="hint-vide">Sélectionne une phrase pour commencer.</p>';
 }
 
-function onPhraseComplete() {
-  const { theme, phraseIndex, palierActuel } = gramState;
+function onPhraseComplete(themeFini, indexFini, palierFini) {
+  const theme = themeFini ?? gramState.theme;
+  const phraseIndex = indexFini ?? gramState.phraseIndex;
+  const palierActuel = palierFini ?? gramState.palierActuel;
   if (palierActuel && theme !== null && phraseIndex !== null) {
     verifierFinDePalier(theme, phraseIndex);
   }
+}
+
+// Verrouille/déverrouille les clics sur la liste de phrases pendant l'animation
+function bloquerListePhrases(bloquer) {
+  const liste = document.getElementById('liste-phrases');
+  if (!liste) return;
+  liste.style.pointerEvents = bloquer ? 'none' : '';
+  liste.style.opacity       = bloquer ? '0.5' : '';
+  liste.style.transition    = 'opacity 0.2s';
 }
