@@ -130,7 +130,7 @@ const CORPUS_ANNOTE = {
         { mot: "entre", cat: "adverbe" },
         { mot: "autres", cat: "pronom" },
         { mot: "sont", cat: "verbe" },
-        { mot: "des", cat: "déterminant" },
+        { mot: "des", cat: "pivot-dp" },
         { mot: "pièces de service", cat: "nom" }
       ]
     },
@@ -142,7 +142,7 @@ const CORPUS_ANNOTE = {
         { mot: "salle de bains", cat: "nom" },
         { mot: "est", cat: "verbe" },
         { mot: "séparée", cat: "verbe" },
-        { mot: "des", cat: "déterminant" },
+        { mot: "des", cat: "pivot-dp" },
         { mot: "W.C.", cat: "nom" }
       ]
     },
@@ -199,7 +199,7 @@ const CORPUS_ANNOTE = {
         { mot: "musique", cat: "nom" },
         { mot: "ou", cat: "conjonction" },
         { mot: "recevoir", cat: "verbe" },
-        { mot: "des", cat: "déterminant" },
+        { mot: "des", cat: "pivot-dp" },
         { mot: "invités", cat: "nom" }
       ]
     },
@@ -275,7 +275,7 @@ const CORPUS_ANNOTE = {
         { mot: "qui", cat: "pronom" },
         { mot: "contient", cat: "verbe" },
         { mot: "souvent", cat: "adverbe" },
-        { mot: "des", cat: "déterminant" },
+        { mot: "des", cat: "pivot-dp" },
         { mot: "fleurs", cat: "nom" }
       ]
     },
@@ -328,7 +328,7 @@ const CORPUS_ANNOTE = {
         { mot: "soupière", cat: "nom" },
         { mot: "un", cat: "déterminant" },
         { mot: "saladier", cat: "nom" },
-        { mot: "des", cat: "déterminant" },
+        { mot: "des", cat: "pivot-dp" },
         { mot: "plats", cat: "nom" },
         { mot: "petits", cat: "adjectif" },
         { mot: "ou", cat: "conjonction" },
@@ -336,7 +336,7 @@ const CORPUS_ANNOTE = {
         { mot: "longs", cat: "adjectif" },
         { mot: "ou", cat: "conjonction" },
         { mot: "ronds", cat: "adjectif" },
-        { mot: "des", cat: "déterminant" },
+        { mot: "des", cat: "pivot-dp" },
         { mot: "assiettes", cat: "nom" },
         { mot: "petites", cat: "adjectif" },
         { mot: "ou", cat: "conjonction" },
@@ -353,13 +353,13 @@ const CORPUS_ANNOTE = {
         { mot: "Le", cat: "déterminant" },
         { mot: "service des verres", cat: "nom" },
         { mot: "comprend", cat: "verbe" },
-        { mot: "des", cat: "déterminant" },
+        { mot: "des", cat: "pivot-dp" },
         { mot: "verres", cat: "nom" },
         { mot: "de", cat: "préposition" },
         { mot: "différentes", cat: "adjectif" },
         { mot: "dimensions", cat: "nom" },
         { mot: "destinés", cat: "adjectif" },
-        { mot: "aux", cat: "déterminant" },
+        { mot: "aux", cat: "pivot-dp" },
         { mot: "divers", cat: "adjectif" },
         { mot: "vins", cat: "nom" }
       ]
@@ -612,10 +612,10 @@ const CORPUS_ANNOTE = {
         { mot: "Il", cat: "pronom" },
         { mot: "y", cat: "pivot" },
         { mot: "a", cat: "verbe" },
-        { mot: "des", cat: "déterminant" },
+        { mot: "des", cat: "pivot-dp" },
         { mot: "tableaux", cat: "nom" },
         { mot: "accrochés", cat: "adjectif" },
-        { mot: "aux", cat: "déterminant" },
+        { mot: "aux", cat: "pivot-dp" },
         { mot: "murs", cat: "nom" }
       ]
     },
@@ -692,10 +692,10 @@ const CORPUS_ANNOTE = {
     },
 
     {
-      phrase: "Un joli lustre éclaire toute la pièce.",
+      phrase: "Une jolie lustre éclaire toute la pièce.",
       tokens: [
-        { mot: "Un", cat: "déterminant" },
-        { mot: "joli", cat: "adjectif" },
+        { mot: "Une", cat: "déterminant" },
+        { mot: "jolie", cat: "adjectif" },
         { mot: "lustre", cat: "nom" },
         { mot: "éclaire", cat: "verbe" },
         { mot: "toute", cat: "adjectif" },
@@ -833,7 +833,7 @@ const CORPUS_ANNOTE = {
         { mot: "quand", cat: "conjonction" },
         { mot: "les", cat: "déterminant" },
         { mot: "fleurs", cat: "nom" },
-        { mot: "du", cat: "déterminant" },
+        { mot: "du", cat: "pivot-dp" },
         { mot: "jardin", cat: "nom" },
         { mot: "sont", cat: "verbe" },
         { mot: "en", cat: "préposition" },
@@ -878,7 +878,7 @@ const CORPUS_ANNOTE = {
         { mot: "y", cat: "pivot" },
         { mot: "reçois", cat: "verbe" },
         { mot: "parfois", cat: "adverbe" },
-        { mot: "des", cat: "déterminant" },
+        { mot: "des", cat: "pivot-dp" },
         { mot: "amis", cat: "nom" },
         { mot: "pour", cat: "préposition" },
         { mot: "discuter", cat: "verbe" }
@@ -958,10 +958,10 @@ const CORPUS_ANNOTE = {
         { mot: "y", cat: "pivot" },
         { mot: "a", cat: "verbe" },
         { mot: "souvent", cat: "adverbe" },
-        { mot: "des", cat: "déterminant" },
+        { mot: "des", cat: "pivot-dp" },
         { mot: "magazines", cat: "nom" },
         { mot: "et", cat: "conjonction" },
-        { mot: "des", cat: "déterminant" },
+        { mot: "des", cat: "pivot-dp" },
         { mot: "livres", cat: "nom" }
       ]
     },
@@ -1005,7 +1005,7 @@ const CORPUS_ANNOTE = {
         { mot: "sur", cat: "préposition" },
         { mot: "le", cat: "déterminant" },
         { mot: "tapis", cat: "nom" },
-        { mot: "du", cat: "déterminant" },
+        { mot: "du", cat: "pivot-dp" },
         { mot: "salon", cat: "nom" }
       ]
     },
@@ -1049,7 +1049,7 @@ const CORPUS_ANNOTE = {
         { mot: "miroir", cat: "nom" },
         { mot: "est", cat: "verbe" },
         { mot: "accroché", cat: "verbe" },
-        { mot: "au", cat: "déterminant" },
+        { mot: "au", cat: "pivot-dp" },
         { mot: "mur", cat: "nom" }
       ]
     },
@@ -1057,7 +1057,7 @@ const CORPUS_ANNOTE = {
     {
       phrase: "Des plantes vertes décorent les coins de la pièce.",
       tokens: [
-        { mot: "Des", cat: "déterminant" },
+        { mot: "Des", cat: "pivot-dp" },
         { mot: "plantes", cat: "nom" },
         { mot: "vertes", cat: "adjectif" },
         { mot: "décorent", cat: "verbe" },
@@ -1145,7 +1145,7 @@ const CORPUS_ANNOTE = {
         { mot: "logements", cat: "nom" },
         { mot: "sont", cat: "verbe" },
         { mot: "d'habitude", cat: "adverbe" },
-        { mot: "des", cat: "déterminant" },
+        { mot: "des", cat: "pivot-dp" },
         { mot: "appartements", cat: "nom" }
       ]
     },
@@ -1162,7 +1162,7 @@ const CORPUS_ANNOTE = {
         { mot: "faubourgs", cat: "nom" },
         { mot: "ce", cat: "pronom" },
         { mot: "peut-être", cat: "adverbe" },
-        { mot: "des", cat: "déterminant" },
+        { mot: "des", cat: "pivot-dp" },
         { mot: "maisons", cat: "nom" },
         { mot: "de", cat: "préposition" },
         { mot: "plus", cat: "adverbe" },
@@ -1184,7 +1184,7 @@ const CORPUS_ANNOTE = {
         { mot: "comporter", cat: "verbe" },
         { mot: "une", cat: "déterminant" },
         { mot: "cave", cat: "nom" },
-        { mot: "au", cat: "déterminant" },
+        { mot: "au", cat: "pivot-dp" },
         { mot: "sous-sol", cat: "nom" },
         { mot: "un", cat: "déterminant" },
         { mot: "grenier", cat: "nom" },
@@ -1192,7 +1192,7 @@ const CORPUS_ANNOTE = {
         { mot: "le", cat: "déterminant" },
         { mot: "toit", cat: "nom" },
         { mot: "et", cat: "conjonction" },
-        { mot: "des", cat: "déterminant" },
+        { mot: "des", cat: "pivot-dp" },
         { mot: "escaliers", cat: "nom" },
         { mot: "pour", cat: "préposition" },
         { mot: "passer", cat: "verbe" },
@@ -1230,7 +1230,7 @@ const CORPUS_ANNOTE = {
         { mot: "l'", cat: "déterminant" },
         { mot: "on", cat: "pronom" },
         { mot: "cultive", cat: "verbe" },
-        { mot: "des", cat: "déterminant" },
+        { mot: "des", cat: "pivot-dp" },
         { mot: "légumes", cat: "nom" },
         { mot: "est", cat: "verbe" },
         { mot: "appelé", cat: "verbe" },
@@ -1248,7 +1248,7 @@ const CORPUS_ANNOTE = {
         { mot: "l'", cat: "déterminant" },
         { mot: "on", cat: "pronom" },
         { mot: "cultive", cat: "verbe" },
-        { mot: "des", cat: "déterminant" },
+        { mot: "des", cat: "pivot-dp" },
         { mot: "fruits", cat: "nom" },
         { mot: "est", cat: "verbe" },
         { mot: "appelé", cat: "verbe" },
@@ -1266,7 +1266,7 @@ const CORPUS_ANNOTE = {
         { mot: "il", cat: "pronom" },
         { mot: "y", cat: "pivot" },
         { mot: "a", cat: "verbe" },
-        { mot: "des", cat: "déterminant" },
+        { mot: "des", cat: "pivot-dp" },
         { mot: "fleurs", cat: "nom" },
         { mot: "plantées", cat: "adjectif" },
         { mot: "en", cat: "préposition" },
@@ -1282,7 +1282,7 @@ const CORPUS_ANNOTE = {
       phrase: "Quelquefois des plantes grimpantes couvrent une partie de la façade.",
       tokens: [
         { mot: "Quelquefois", cat: "adverbe" },
-        { mot: "des", cat: "déterminant" },
+        { mot: "des", cat: "pivot-dp" },
         { mot: "plantes", cat: "nom" },
         { mot: "grimpantes", cat: "adjectif" },
         { mot: "couvrent", cat: "verbe" },
@@ -1303,7 +1303,7 @@ const CORPUS_ANNOTE = {
         { mot: "les", cat: "déterminant" },
         { mot: "jardins", cat: "nom" },
         { mot: "sont", cat: "verbe" },
-        { mot: "des", cat: "déterminant" },
+        { mot: "des", cat: "pivot-dp" },
         { mot: "surfaces", cat: "nom" },
         { mot: "plantées", cat: "adjectif" },
         { mot: "d'", cat: "préposition" },
@@ -1538,7 +1538,7 @@ const CORPUS_ANNOTE = {
         { mot: "leurs", cat: "déterminant" },
         { mot: "biens", cat: "nom" },
         { mot: "à", cat: "préposition" },
-        { mot: "des", cat: "déterminant" },
+        { mot: "des", cat: "pivot-dp" },
         { mot: "locataires", cat: "nom" }
       ]
     }
@@ -1597,7 +1597,7 @@ const CORPUS_ANNOTE = {
         { mot: "Il", cat: "pronom" },
         { mot: "y", cat: "pivot" },
         { mot: "a", cat: "verbe" },
-        { mot: "des", cat: "déterminant" },
+        { mot: "des", cat: "pivot-dp" },
         { mot: "trottoirs", cat: "nom" },
         { mot: "de", cat: "préposition" },
         { mot: "chaque", cat: "déterminant" },
@@ -1614,7 +1614,7 @@ const CORPUS_ANNOTE = {
         { mot: "il", cat: "pronom" },
         { mot: "y", cat: "pivot" },
         { mot: "a", cat: "verbe" },
-        { mot: "des", cat: "déterminant" },
+        { mot: "des", cat: "pivot-dp" },
         { mot: "commerces", cat: "nom" }
       ]
     },
@@ -1625,7 +1625,7 @@ const CORPUS_ANNOTE = {
         { mot: "La", cat: "déterminant" },
         { mot: "boulangerie", cat: "nom" },
         { mot: "est", cat: "verbe" },
-        { mot: "au", cat: "déterminant" },
+        { mot: "au", cat: "pivot-dp" },
         { mot: "coin", cat: "nom" },
         { mot: "de", cat: "préposition" },
         { mot: "la", cat: "déterminant" },
@@ -1725,9 +1725,9 @@ const CORPUS_ANNOTE = {
         { mot: "fontaine", cat: "nom" },
         { mot: "se", cat: "pronom" },
         { mot: "trouve", cat: "verbe" },
-        { mot: "au", cat: "déterminant" },
+        { mot: "au", cat: "pivot-dp" },
         { mot: "centre", cat: "nom" },
-        { mot: "du", cat: "déterminant" },
+        { mot: "du", cat: "pivot-dp" },
         { mot: "square", cat: "nom" }
       ]
     },
@@ -1768,12 +1768,12 @@ const CORPUS_ANNOTE = {
         { mot: "On", cat: "pronom" },
         { mot: "y", cat: "pivot" },
         { mot: "trouve", cat: "verbe" },
-        { mot: "des", cat: "déterminant" },
+        { mot: "des", cat: "pivot-dp" },
         { mot: "fruits", cat: "nom" },
-        { mot: "des", cat: "déterminant" },
+        { mot: "des", cat: "pivot-dp" },
         { mot: "légumes", cat: "nom" },
         { mot: "et", cat: "conjonction" },
-        { mot: "des", cat: "déterminant" },
+        { mot: "des", cat: "pivot-dp" },
         { mot: "fleurs", cat: "nom" }
       ]
     },
@@ -1813,7 +1813,7 @@ const CORPUS_ANNOTE = {
         { mot: "piétonnes", cat: "adjectif" },
         { mot: "et", cat: "conjonction" },
         { mot: "interdites", cat: "adjectif" },
-        { mot: "aux", cat: "déterminant" },
+        { mot: "aux", cat: "pivot-dp" },
         { mot: "voitures", cat: "nom" }
       ]
     },
@@ -1825,7 +1825,7 @@ const CORPUS_ANNOTE = {
         { mot: "soir", cat: "nom" },
         { mot: "les", cat: "déterminant" },
         { mot: "terrasses", cat: "nom" },
-        { mot: "des", cat: "déterminant" },
+        { mot: "des", cat: "pivot-dp" },
         { mot: "cafés", cat: "nom" },
         { mot: "sont", cat: "verbe" },
         { mot: "souvent", cat: "adverbe" },
@@ -1865,7 +1865,7 @@ const CORPUS_ANNOTE = {
       phrase: "Parfois, des musiciens jouent dans la rue.",
       tokens: [
         { mot: "Parfois", cat: "adverbe" },
-        { mot: "des", cat: "déterminant" },
+        { mot: "des", cat: "pivot-dp" },
         { mot: "musiciens", cat: "nom" },
         { mot: "jouent", cat: "verbe" },
         { mot: "dans", cat: "préposition" },

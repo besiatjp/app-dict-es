@@ -42,7 +42,7 @@ const PALIERS = [
   {
     num: 3,
     catNouvelle: "déterminant",
-    catsActives: ["nom","verbe","déterminant"],
+    catsActives: ["nom","verbe","déterminant","pivot-dp"],
     phrases: [
       { theme: "Maison", phraseIndex: 8, nbCats: 3, nbTokens: 6 },
       { theme: "Habitation", phraseIndex: 20, nbCats: 3, nbTokens: 6 },
@@ -51,7 +51,7 @@ const PALIERS = [
   {
     num: 4,
     catNouvelle: "pronom",
-    catsActives: ["nom","verbe","déterminant","pronom"],
+    catsActives: ["nom","verbe","déterminant","pivot-dp","pronom"],
     phrases: [
       { theme: "Maison", phraseIndex: 0, nbCats: 4, nbTokens: 4 },
       { theme: "Maison", phraseIndex: 3, nbCats: 4, nbTokens: 5 },
@@ -65,7 +65,7 @@ const PALIERS = [
   {
     num: 5,
     catNouvelle: "préposition",
-    catsActives: ["nom","verbe","déterminant","pronom","préposition"],
+    catsActives: ["nom","verbe","déterminant","pivot-dp","pronom","préposition"],
     phrases: [
       { theme: "Maison", phraseIndex: 19, nbCats: 4, nbTokens: 5 },
       { theme: "Maison", phraseIndex: 17, nbCats: 4, nbTokens: 6 },
@@ -96,7 +96,7 @@ const PALIERS = [
   {
     num: 6,
     catNouvelle: "adjectif",
-    catsActives: ["nom","verbe","déterminant","pronom","préposition","adjectif"],
+    catsActives: ["nom","verbe","déterminant","pivot-dp","pronom","préposition","adjectif"],
     phrases: [
       { theme: "Quartier", phraseIndex: 1, nbCats: 4, nbTokens: 4 },
       { theme: "Chambre", phraseIndex: 0, nbCats: 4, nbTokens: 6 },
@@ -121,7 +121,7 @@ const PALIERS = [
   {
     num: 7,
     catNouvelle: "adverbe",
-    catsActives: ["nom","verbe","déterminant","pronom","préposition","adjectif","adverbe"],
+    catsActives: ["nom","verbe","déterminant","pivot-dp","pronom","préposition","adjectif","adverbe"],
     phrases: [
       { theme: "Chambre", phraseIndex: 27, nbCats: 4, nbTokens: 6 },
       { theme: "Quartier", phraseIndex: 17, nbCats: 4, nbTokens: 6 },
@@ -150,7 +150,7 @@ const PALIERS = [
   {
     num: 8,
     catNouvelle: "conjonction",
-    catsActives: ["nom","verbe","déterminant","pronom","préposition","adjectif","adverbe","conjonction"],
+    catsActives: ["nom","verbe","déterminant","pivot-dp","pronom","préposition","adjectif","adverbe","conjonction"],
     phrases: [
       { theme: "Quartier", phraseIndex: 3, nbCats: 5, nbTokens: 6 },
       { theme: "Quartier", phraseIndex: 19, nbCats: 5, nbTokens: 8 },
@@ -180,7 +180,7 @@ const PALIERS = [
   {
     num: 9,
     catNouvelle: "pivot",
-    catsActives: ["nom","verbe","déterminant","pronom","préposition","adjectif","adverbe","conjonction","pivot"],
+    catsActives: ["nom","verbe","déterminant","pivot-dp","pronom","préposition","adjectif","adverbe","conjonction","pivot"],
     phrases: [
       { theme: "Quartier", phraseIndex: 2, nbCats: 6, nbTokens: 6 },
       { theme: "Maison", phraseIndex: 4, nbCats: 6, nbTokens: 7 },

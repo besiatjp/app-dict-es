@@ -266,7 +266,7 @@ function activerCasesPourPalier(palier) {
     const el = document.getElementById('case-' + c.id);
     if (!el) return;
     let active = (c.id === 'pivot') ? catsActives.has('pivot')
-               : (c.id === 'pivot-dp') ? false
+               : (c.id === 'pivot-dp') ? catsActives.has('pivot-dp')
                : catsActives.has(c.cat);
     el.classList.toggle('inactive', !active);
     el.style.transition = 'opacity 0.5s, filter 0.5s';
