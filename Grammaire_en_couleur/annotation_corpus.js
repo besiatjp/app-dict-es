@@ -830,7 +830,7 @@ const CORPUS_ANNOTE = {
         { mot: "chambre", cat: "nom" },
         { mot: "sent", cat: "verbe" },
         { mot: "bon", cat: "adverbe" },
-        { mot: "quand", cat: "conjonction" },
+        { mot: "quand", cat: "adverbe" },
         { mot: "les", cat: "déterminant" },
         { mot: "fleurs", cat: "nom" },
         { mot: "du", cat: "pivot-dp" },
