@@ -655,3 +655,21 @@ h1 {
   text-decoration: underline; cursor: pointer; padding: 0;
 }
 .btn-suggestion:hover { color: #4C1D95; }
+
+/* ─── Sélecteur de voix ──────────────────────────────────────────────────── */
+.voix-selector {
+  display: flex; align-items: center; gap: 0.4rem;
+  margin-top: 0.1rem;
+}
+.voix-label {
+  font-size: 0.72rem; font-weight: 700;
+  color: var(--gris-3); text-transform: uppercase; letter-spacing: 0.08em;
+}
+.btn-voix {
+  font-family: var(--fonte); font-size: 0.78rem; font-weight: 600;
+  padding: 0.2rem 0.6rem; border-radius: 20px; cursor: pointer;
+  border: 1.5px solid var(--gris-4); background: white; color: var(--gris-2);
+  transition: all 0.15s;
+}
+.btn-voix:hover { border-color: var(--bleu); color: var(--bleu); }
+.btn-voix.actif { background: var(--bleu-clair); border-color: var(--bleu); color: var(--bleu); font-weight: 700; }

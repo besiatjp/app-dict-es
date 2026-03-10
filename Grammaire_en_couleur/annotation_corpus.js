@@ -1735,7 +1735,7 @@ const CORPUS_ANNOTE = {
     {
       phrase: "Quand il fait beau, les personnes âgées s'assoient sur les bancs.",
       tokens: [
-        { mot: "Quand", cat: "conjonction" },
+        { mot: "Quand", cat: "adverbe" },
         { mot: "il", cat: "pronom" },
         { mot: "fait", cat: "verbe" },
         { mot: "beau", cat: "adjectif" },
@@ -1793,7 +1793,7 @@ const CORPUS_ANNOTE = {
     {
       phrase: "Quand il pleut, les rues se vident rapidement.",
       tokens: [
-        { mot: "Quand", cat: "conjonction" },
+        { mot: "Quand", cat: "adverbe" },
         { mot: "il", cat: "pronom" },
         { mot: "pleut", cat: "verbe" },
         { mot: "les", cat: "déterminant" },
