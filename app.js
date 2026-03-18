@@ -166,6 +166,7 @@ function afficherMessage(zone, type, texte) {
   zone.innerHTML = `<div class="message ${type}"><span class="icone-msg"></span><span>${texte}</span></div>`;
   document.getElementById('btn-indice').classList.remove('cache');
   document.getElementById('btn-contexte').classList.remove('cache');
+  afficherAvertissementAnalyse(zone);
 }
 
 function afficherAnalyse(zone, motsSaisie, motsOriginal) {
@@ -190,6 +191,15 @@ function afficherAnalyse(zone, motsSaisie, motsOriginal) {
   state._erreurs = erreurs; state._motsSaisie = motsSaisie; state._motsOriginal = motsOriginal;
   // Suggestion de renforcement si un mot dépasse 3 erreurs
   afficherSuggestionRenforcement(zone, erreurs.map(e => e.attendu));
+  afficherAvertissementAnalyse(zone);
+}
+
+// ─── Avertissement analyse ─────────────────────────────────────────────────
+function afficherAvertissementAnalyse(zone) {
+  const div = document.createElement('div');
+  div.className = 'avertissement-analyse';
+  div.textContent = "L'analyse peut parfois se tromper — fais confiance à ton oreille. En cas de doute, contacte une personne référente.";
+  zone.appendChild(div);
 }
 
 // ─── Suggestion de renforcement ────────────────────────────────────────────

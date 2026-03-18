@@ -206,6 +206,32 @@ function detecterConfusionVerbale(a, s) {
 
 // ── Labels d'affichage ────────────────────────────────────────────────────
 
+// ── Confusions lexicales / homophones ────────────────────────────────────
+// Paires saisi → attendu : mots existants mais incorrects dans le contexte.
+// Type : 'lexique' (erreur de choix de forme, pas de graphie).
+
+const CONFUSIONS_LEXICALES = new Map([
+  ['peut-etre', 'peut'],  // peut-être (adverbe) vs peut être (pouvoir + inf.)
+  ['peu',  'peut'],       // peu (quantité) vs peut (pouvoir)
+  ['peut', 'peu'],
+  ['et',   'est'],        // et (conjonction) vs est (verbe être)
+  ['est',  'et'],
+]);
+
+function detecterConfusionLexicale(attendu, saisi) {
+  const a  = normaliser(attendu);
+  const s  = normaliser(saisi);
+  // ou / où : supprimeAccents les rend identiques → tester avant suppression
+  if ((a === 'où' && s === 'ou') || (a === 'ou' && s === 'où'))
+    return { type: 'lexique', detail: `"${saisi}" est un mot existant mais incorrect ici — attendu : "${attendu}"` };
+  const aS = supprimeAccents(a);
+  const sS = supprimeAccents(s);
+  const cible = CONFUSIONS_LEXICALES.get(sS);
+  if (cible && supprimeAccents(normaliser(cible)) === aS)
+    return { type: 'lexique', detail: `"${saisi}" est un mot existant mais incorrect ici — attendu : "${attendu}"` };
+  return null;
+}
+
 const LABELS_ERREUR = {
   manquant:               { label: 'mot manquant',          couleur: 'rouge'  },
   accent:                 { label: 'accent',                couleur: 'orange' },
@@ -215,11 +241,12 @@ const LABELS_ERREUR = {
   ponctuation_incorrecte: { label: 'ponctuation incorrecte',couleur: 'orange' },
   apostrophe_manquante:   { label: 'apostrophe manquante',  couleur: 'orange' },
   apostrophe_en_trop:     { label: 'apostrophe en trop',    couleur: 'orange' },
-  frappe:                 { label: 'frappe',                couleur: 'bleu'   },
+  lexique:                { label: 'erreur lexicale',       couleur: 'violet' },
+  frappe:                 { label: 'à vérifier',            couleur: 'bleu'   },
   syntaxe:                { label: 'syntaxe (accord)',      couleur: 'violet' },
   inf_participe:          { label: 'infinitif → participe', couleur: 'violet' },
   participe_inf:          { label: 'participe → infinitif', couleur: 'violet' },
-  orthographe:            { label: 'orthographe',           couleur: 'rouge'  },
+  orthographe:            { label: 'à vérifier',            couleur: 'bleu'   },
   en_trop:                { label: 'mot en trop',           couleur: 'rouge'  },
 };
 
@@ -235,6 +262,9 @@ function classerErreur(attendu, saisi) {
 
   const confVerb = detecterConfusionVerbale(a, s);
   if (confVerb) return confVerb;
+
+  const confLex = detecterConfusionLexicale(attendu, saisi);
+  if (confLex) return confLex;
 
   if (aS === sS && a !== s) return { type: 'accent',    detail: 'accent manquant ou incorrect' };
   if (a.toLowerCase() === s.toLowerCase() && a !== s)
@@ -260,10 +290,11 @@ function classerErreur(attendu, saisi) {
   if (estPaireAccord(a, s))
     return { type: 'syntaxe', detail: 'accord : "' + saisi + '" au lieu de "' + attendu + '"' };
 
+  // frappe et orthographe fusionnés — label 'à vérifier'
   const dist   = levenshtein(aS, sS);
   const motRef = Math.max(aS.length, sS.length);
-  if (dist === 1)              return { type: 'frappe', detail: `"${saisi}" ressemble à "${attendu}"` };
-  if (dist === 2 && motRef>=6) return { type: 'frappe', detail: `"${saisi}" proche de "${attendu}"` };
+  if (dist === 1)              return { type: 'orthographe', detail: `"${saisi}" ressemble à "${attendu}"` };
+  if (dist === 2 && motRef>=6) return { type: 'orthographe', detail: `"${saisi}" proche de "${attendu}"` };
 
   return { type: 'orthographe', detail: `"${saisi}" au lieu de "${attendu}"` };
 }
