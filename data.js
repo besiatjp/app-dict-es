@@ -159,5 +159,51 @@ const DICTEES = {
     "Les grandes surfaces sont souvent construites en périphérie des villes.",
     "Elles attirent de nombreux clients venus de communes voisines.",
     "Certains supermarchés proposent aussi un service de livraison à domicile."
+  ],
+  "La ville": [
+    "Les humains vivent souvent en groupes dans des lieux habités.",
+    "Un petit lieu habité s'appelle un village.",
+    "Une ville est plus grande qu'un village.",
+    "Les villes varient beaucoup en taille et en population.",
+    "Une métropole est une très grande ville qui rayonne sur toute une région.",
+    "Chaque commune est administrée par une mairie.",
+    "Le maire est élu par les habitants de la commune.",
+    "Le conseil municipal prend les décisions importantes pour la vie locale.",
+    "Les rues, les places et les parcs font partie de l'espace public.",
+    "Les bâtiments publics comme les écoles et les hôpitaux sont accessibles à tous.",
+    "En ville, les immeubles sont souvent construits les uns près des autres.",
+    "Les transports en commun permettent de se déplacer sans voiture.",
+    "Les grandes villes disposent en général de métros, de bus et de tramways.",
+    "Les axes routiers relient les différents quartiers entre eux.",
+    "Un boulevard est une large avenue bordée d'arbres.",
+    "Les villes attirent de nombreuses personnes en quête de travail ou d'études.",
+    "La population des villes a fortement augmenté au cours du vingtième siècle.",
+    "Ce phénomène s'appelle l'urbanisation.",
+    "L'urbanisation entraîne parfois des problèmes de logement et de circulation.",
+    "Certaines villes cherchent à développer des espaces verts pour améliorer la qualité de vie.",
+    "Les relations entre villes voisines sont souvent organisées en communautés d'agglomération.",
+    "Une région regroupe plusieurs départements et dispose d'un conseil régional.",
+    "Les grandes métropoles exercent une influence économique et culturelle sur les territoires qui les entourent.",
+    "L'aménagement du territoire vise à répartir les activités et les populations de façon équilibrée.",
+    "L'équilibre entre zones urbaines et zones rurales reste un enjeu majeur pour les sociétés contemporaines."
   ]
+};
+
+// ── Structure hiérarchique des thèmes englobants ──────────────────────────
+// Permet la navigation à deux niveaux : thème englobant → sous-thème → phrases
+// Les clés de DICTEES restent inchangées pour compatibilité avec le localStorage.
+
+const THEMES_ENGLOBANTS = {
+  "L'urbanisation": [
+    "Maison",
+    "Chambre",
+    "Salon",
+    "Habitation",
+    "Quartier",
+    "Grande surface",
+    "La ville"
+  ]
+  // Futurs thèmes englobants à ajouter ici :
+  // "Les études": ["L'école", "Le collège", "Le lycée", "L'université"],
+  // "Les religions": ["Islam", "Christianisme", "Judaïsme", "La laïcité"],
 };
