@@ -83,7 +83,7 @@ const DICTEES = {
     "Le lieu où on habite est un logement.",
     "On l'appelle aussi le domicile, par opposition avec le bureau ou le lieu où l'on travaille.",
     "En ville, les logements sont d'habitude des appartements.",
-    "À la campagne ou dans les faubourgs, ce peut-être des maisons de plus d'un étage.",
+    "À la campagne ou dans les faubourgs, ce peut être des maisons de plus d'un étage.",
     "Dans ce cas, la maison peut comporter une cave au sous-sol, un grenier sous le toit et des escaliers pour passer d'un étage à l'autre.",
     "Autour de la maison il peut y avoir un jardin.",
     "Un jardin où l'on cultive des légumes est appelé un potager.",

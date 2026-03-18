@@ -108,6 +108,25 @@ const LEXIQUE_VERBAL = {
   "relié":      {type:"part", formes:["relier"]},  "reliée":     {type:"part", formes:["relier"]},
 };
 
+// ── Confusions lexicales connues ─────────────────────────────────────────
+// Paires mot_saisi → mot_attendu où la forme saisie est un mot existant
+// mais incorrect dans ce contexte (erreur de choix lexical, pas de graphie).
+// À enrichir au fil du corpus.
+
+const CONFUSIONS_LEXICALES = new Map([
+  // peut-être (adverbe) vs peut être (pouvoir + infinitif)
+  ['peut-etre', 'peut'],  // apprenant écrit "peut-être", attendu "peut"
+]);
+
+function detecterConfusionLexicale(attendu, saisi) {
+  const a = supprimeAccents(normaliser(attendu));
+  const s = supprimeAccents(normaliser(saisi));
+  const cible = CONFUSIONS_LEXICALES.get(s);
+  if (cible && supprimeAccents(normaliser(cible)) === a)
+    return { type: 'lexique', detail: `"${saisi}" est un mot existant mais incorrect ici — attendu : "${attendu}"` };
+  return null;
+}
+
 // ── Paires d'accord connues ───────────────────────────────────────────────
 // Détectées avant Levenshtein pour ne pas les classer en "frappe"
 
@@ -175,6 +194,7 @@ const LABELS_ERREUR = {
   ponctuation_incorrecte: { label: 'ponctuation incorrecte',couleur: 'orange' },
   apostrophe_manquante:   { label: 'apostrophe manquante',  couleur: 'orange' },
   apostrophe_en_trop:     { label: 'apostrophe en trop',    couleur: 'orange' },
+  lexique:                { label: 'erreur lexicale',       couleur: 'violet' },
   frappe:                 { label: 'frappe',                couleur: 'bleu'   },
   syntaxe:                { label: 'syntaxe (accord)',      couleur: 'violet' },
   inf_participe:          { label: 'infinitif → participe', couleur: 'violet' },
@@ -195,6 +215,9 @@ function classerErreur(attendu, saisi) {
 
   const confVerb = detecterConfusionVerbale(a, s);
   if (confVerb) return confVerb;
+
+  const confLex = detecterConfusionLexicale(attendu, saisi);
+  if (confLex) return confLex;
 
   if (aS === sS && a !== s) return { type: 'accent',    detail: 'accent manquant ou incorrect' };
   if (a.toLowerCase() === s.toLowerCase() && a !== s)
