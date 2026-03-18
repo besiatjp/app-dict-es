@@ -108,25 +108,6 @@ const LEXIQUE_VERBAL = {
   "relié":      {type:"part", formes:["relier"]},  "reliée":     {type:"part", formes:["relier"]},
 };
 
-// ── Confusions lexicales connues ─────────────────────────────────────────
-// Paires mot_saisi → mot_attendu où la forme saisie est un mot existant
-// mais incorrect dans ce contexte (erreur de choix lexical, pas de graphie).
-// À enrichir au fil du corpus.
-
-const CONFUSIONS_LEXICALES = new Map([
-  // peut-être (adverbe) vs peut être (pouvoir + infinitif)
-  ['peut-etre', 'peut'],  // apprenant écrit "peut-être", attendu "peut"
-]);
-
-function detecterConfusionLexicale(attendu, saisi) {
-  const a = supprimeAccents(normaliser(attendu));
-  const s = supprimeAccents(normaliser(saisi));
-  const cible = CONFUSIONS_LEXICALES.get(s);
-  if (cible && supprimeAccents(normaliser(cible)) === a)
-    return { type: 'lexique', detail: `"${saisi}" est un mot existant mais incorrect ici — attendu : "${attendu}"` };
-  return null;
-}
-
 // ── Paires d'accord connues ───────────────────────────────────────────────
 // Détectées avant Levenshtein pour ne pas les classer en "frappe"
 
@@ -183,6 +164,45 @@ function detecterConfusionVerbale(a, s) {
   return null;
 }
 
+// ── Confusions lexicales / homophones ────────────────────────────────────
+// Paires saisi → attendu : mots existants mais incorrects dans le contexte.
+// Les deux sens sont enregistrés pour couvrir les deux directions d'erreur.
+// Type : 'lexique' (erreur de choix de forme, pas de graphie).
+
+const CONFUSIONS_LEXICALES = new Map([
+  // peut-être (adverbe) vs peut être (pouvoir + infinitif)
+  ['peut-etre', 'peut'],
+
+  // peu (adverbe de quantité) vs peut (verbe pouvoir)
+  ['peu',  'peut'],
+  ['peut', 'peu'],
+
+  // ou (conjonction) vs où (adverbe/pronom de lieu)
+  ['ou', 'ou'],   // même sans accent → géré par supprimeAccents, voir detecter
+  // Les deux normalisés sans accent donnent 'ou' → on compare la forme originale
+  // La détection se fait sur la forme normalisée AVEC accents pour distinguer ou/où
+
+  // et (conjonction) vs est (verbe être)
+  ['et',  'est'],
+  ['est', 'et'],
+]);
+
+function detecterConfusionLexicale(attendu, saisi) {
+  // Pour ou/où : comparer avec accents (normaliser conserve les accents)
+  const a  = normaliser(attendu);
+  const s  = normaliser(saisi);
+  // Cas ou / où : supprimeAccents les rend identiques → tester avant suppression
+  if ((a === 'où' && s === 'ou') || (a === 'ou' && s === 'où'))
+    return { type: 'lexique', detail: `"${saisi}" est un mot existant mais incorrect ici — attendu : "${attendu}"` };
+
+  const aS = supprimeAccents(a);
+  const sS = supprimeAccents(s);
+  const cible = CONFUSIONS_LEXICALES.get(sS);
+  if (cible && supprimeAccents(normaliser(cible)) === aS)
+    return { type: 'lexique', detail: `"${saisi}" est un mot existant mais incorrect ici — attendu : "${attendu}"` };
+  return null;
+}
+
 // ── Labels d'affichage ────────────────────────────────────────────────────
 
 const LABELS_ERREUR = {
@@ -195,11 +215,11 @@ const LABELS_ERREUR = {
   apostrophe_manquante:   { label: 'apostrophe manquante',  couleur: 'orange' },
   apostrophe_en_trop:     { label: 'apostrophe en trop',    couleur: 'orange' },
   lexique:                { label: 'erreur lexicale',       couleur: 'violet' },
-  frappe:                 { label: 'frappe',                couleur: 'bleu'   },
   syntaxe:                { label: 'syntaxe (accord)',      couleur: 'violet' },
   inf_participe:          { label: 'infinitif → participe', couleur: 'violet' },
   participe_inf:          { label: 'participe → infinitif', couleur: 'violet' },
-  orthographe:            { label: 'orthographe',           couleur: 'rouge'  },
+  frappe:                 { label: 'à vérifier',            couleur: 'bleu'   },
+  orthographe:            { label: 'à vérifier',            couleur: 'bleu'   },
   en_trop:                { label: 'mot en trop',           couleur: 'rouge'  },
 };
 
@@ -243,10 +263,11 @@ function classerErreur(attendu, saisi) {
   if (estPaireAccord(a, s))
     return { type: 'syntaxe', detail: 'accord : "' + saisi + '" au lieu de "' + attendu + '"' };
 
+  // frappe et orthographe fusionnés sous un seul type 'orthographe' (label : 'à vérifier')
   const dist   = levenshtein(aS, sS);
   const motRef = Math.max(aS.length, sS.length);
-  if (dist === 1)              return { type: 'frappe', detail: `"${saisi}" ressemble à "${attendu}"` };
-  if (dist === 2 && motRef>=6) return { type: 'frappe', detail: `"${saisi}" proche de "${attendu}"` };
+  if (dist === 1)              return { type: 'orthographe', detail: `"${saisi}" ressemble à "${attendu}"` };
+  if (dist === 2 && motRef>=6) return { type: 'orthographe', detail: `"${saisi}" proche de "${attendu}"` };
 
   return { type: 'orthographe', detail: `"${saisi}" au lieu de "${attendu}"` };
 }

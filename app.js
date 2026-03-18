@@ -178,11 +178,11 @@ function afficherAnalyse(zone, motsSaisie, motsOriginal) {
   erreurs.forEach(e => { parType[e.type] = (parType[e.type]||0) + 1; });
   const tags = Object.entries(parType).map(([type, nb]) => {
     const {label, couleur} = LABELS_ERREUR[type] || {label:type, couleur:'rouge'};
-    return `<span class="tag-erreur tag-${couleur}">${nb>1?nb+'× ':''}${label}</span>`;
+    return `<span class="tag-erreur tag-${couleur}">${label}</span>`;
   });
   zone.innerHTML = `<div class="message erreur"><span class="icone-msg">✗</span><span>${erreurs.length} erreur${erreurs.length>1?'s':''} : ${tags.join(' ')}</span></div>`;
   const msgTexte = `${erreurs.length} erreur${erreurs.length>1?'s':''} : `
-    + Object.entries(parType).map(([t,n]) => (n>1?n+'× ':'')+(LABELS_ERREUR[t]?.label||t)).join(', ');
+    + Object.entries(parType).map(([t]) => (LABELS_ERREUR[t]?.label||t)).join(', ');
   ajouterHistorique(msgTexte, 'erreur', false);
   document.getElementById('btn-indice').classList.remove('cache');
   document.getElementById('btn-contexte').classList.remove('cache');
@@ -196,7 +196,7 @@ function afficherAnalyse(zone, motsSaisie, motsOriginal) {
 function afficherSuggestionRenforcement(zone, mots) {
   const stats = chargerStats();
   const motsARevoir = [];
-  mots.filter(Boolean).forEach(mot => {
+  mots.forEach(mot => {
     let total = 0;
     Object.values(stats).forEach(theme => {
       Object.values(theme).forEach(phrase => {
@@ -210,14 +210,14 @@ function afficherSuggestionRenforcement(zone, mots) {
 
   // Prendre le mot le plus souvent raté
   motsARevoir.sort((a, b) => b.total - a.total);
-  const { mot } = motsARevoir[0];
+  const { mot, total } = motsARevoir[0];
   const phrases = chercherPhrasesAvecMot(mot);
   if (phrases.length === 0) return;
 
   const suggestion = document.createElement('div');
   suggestion.className = 'suggestion-renforcement';
   suggestion.innerHTML = `<span class="suggestion-icone">💡</span>
-    <span>Tu as plusieurs fois eu du mal avec <em>${mot}</em> —
+    <span>Tu as souvent du mal avec <em>${mot}</em> (${total}×) —
     <button class="btn-suggestion" data-mot="${mot}">voir les phrases avec ce mot</button>
     </span>`;
   zone.appendChild(suggestion);
