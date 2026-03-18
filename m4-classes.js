@@ -282,8 +282,18 @@ function classerErreur(attendu, saisi) {
     const termA = aS.slice(prefLen);
     const termS = sS.slice(prefLen);
     const accordFin = ['s','e','es','ent','er','aux','al','elle','elles','eux'];
-    if (accordFin.includes(termA) || accordFin.includes(termS))
-      return { type: 'syntaxe', detail: `accord : "${saisi}" au lieu de "${attendu}"` };
+    if (accordFin.includes(termA) || accordFin.includes(termS)) {
+      // Détecter si la saisie manque aussi des accents :
+      // attendu a des accents (sa racine sans accents ≠ racine) ET saisi n'en a pas
+      const racineA = a.replace(/[sx]$/, '');
+      const racineS = s.replace(/[sx]$/, '');
+      const plusAccent = supprimeAccents(racineA) !== racineA
+                      && supprimeAccents(racineS) === racineS;
+      const detail = plusAccent
+        ? `accord + accent : "${saisi}" au lieu de "${attendu}"`
+        : `accord : "${saisi}" au lieu de "${attendu}"`;
+      return { type: 'syntaxe', detail };
+    }
   }
 
   // Paires d'accord connues — priorité sur Levenshtein
