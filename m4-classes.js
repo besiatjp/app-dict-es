@@ -106,6 +106,34 @@ const LEXIQUE_VERBAL = {
   "salué":      {type:"part", formes:["saluer"]},  "saluée":     {type:"part", formes:["saluer"]},
   "entretenu":  {type:"part", formes:["entretenir"]},"entretenue":{type:"part", formes:["entretenir"]},
   "relié":      {type:"part", formes:["relier"]},  "reliée":     {type:"part", formes:["relier"]},
+  // Thème Grande surface
+  "occuper":    {type:"inf", formes:["occupé","occupée","occupés","occupées"]},
+  "changer":    {type:"inf", formes:["changé","changée","changés","changées"]},
+  "proposer":   {type:"inf", formes:["proposé","proposée","proposés","proposées"]},
+  "comparer":   {type:"inf", formes:["comparé","comparée","comparés","comparées"]},
+  "attendre":   {type:"inf", formes:["attendu","attendue","attendus","attendues"]},
+  "obtenir":    {type:"inf", formes:["obtenu","obtenue","obtenus","obtenues"]},
+  "disposer":   {type:"inf", formes:["disposé","disposée","disposés","disposées"]},
+  "attirer":    {type:"inf", formes:["attiré","attirée","attirés","attirées"]},
+  "construire": {type:"inf", formes:["construit","construite","construits","construites"]},
+  "relier":     {type:"inf", formes:["relié","reliée","reliés","reliées"]},
+  "vendre":     {type:"inf", formes:["vendu","vendue","vendus","vendues"]},
+  "préparer":   {type:"inf", formes:["préparé","préparée","préparés","préparées"]},
+  "indiquer":   {type:"inf", formes:["indiqué","indiquée","indiqués","indiquées"]},
+  "ranger":     {type:"inf", formes:["rangé","rangée","rangés","rangées"]},
+  "fixer":      {type:"inf", formes:["fixé","fixée","fixés","fixées"]},
+  "réserver":   {type:"inf", formes:["réservé","réservée","réservés","réservées"]},
+  "desservir":  {type:"inf", formes:["desservi","desservie","desservis","desservies"]},
+  "ouvert":     {type:"part", formes:["ouvrir"]},  "ouverts":    {type:"part", formes:["ouvrir"]},
+  "vendu":      {type:"part", formes:["vendre"]},  "vendus":     {type:"part", formes:["vendre"]},
+  "préparé":    {type:"part", formes:["préparer"]},"préparés":   {type:"part", formes:["préparer"]},
+  "indiqué":    {type:"part", formes:["indiquer"]},"indiqués":   {type:"part", formes:["indiquer"]},
+  "proposé":    {type:"part", formes:["proposer"]},"proposés":   {type:"part", formes:["proposer"]},
+  "rangé":      {type:"part", formes:["ranger"]},  "rangés":     {type:"part", formes:["ranger"]},
+  "fixé":       {type:"part", formes:["fixer"]},   "fixées":     {type:"part", formes:["fixer"]},
+  "réservé":    {type:"part", formes:["réserver"]},"réservées":  {type:"part", formes:["réserver"]},
+  "construit":  {type:"part", formes:["construire"]},"construites":{type:"part", formes:["construire"]},
+  "venu":       {type:"part", formes:["venir"]},   "venus":      {type:"part", formes:["venir"]},
 };
 
 // ── Paires d'accord connues ───────────────────────────────────────────────
@@ -148,6 +176,18 @@ const PAIRES_ACCORD = new Set([
   'principal|principale', 'principal|principaux', 'principale|principales', 'principaux|principales',
   'desservi|desservie', 'desservi|desservis', 'desservie|desservies',
   'interdit|interdite', 'interdit|interdits', 'interdite|interdites',
+  // Adjectifs thème Grande surface
+  'urbain|urbaine', 'urbain|urbains', 'urbaine|urbaines',
+  'frais|fraîche', 'frais|fraîches',
+  'laitier|laitière', 'laitier|laitiers', 'laitière|laitières',
+  'surgelé|surgelée', 'surgelé|surgelés', 'surgelée|surgelées',
+  'spécialisé|spécialisée', 'spécialisé|spécialisés', 'spécialisée|spécialisées',
+  'central|centrale', 'central|centraux', 'centrale|centrales', 'centraux|centrales',
+  'nombreux|nombreuse', 'nombreux|nombreuses',
+  'vaste|vastes',
+  'gratuit|gratuite', 'gratuit|gratuits', 'gratuite|gratuites',
+  'handicapé|handicapée', 'handicapé|handicapés', 'handicapée|handicapées',
+  'voisin|voisine', 'voisin|voisins', 'voisine|voisines',
 ]);
 
 function estPaireAccord(a, s) {
@@ -164,45 +204,6 @@ function detecterConfusionVerbale(a, s) {
   return null;
 }
 
-// ── Confusions lexicales / homophones ────────────────────────────────────
-// Paires saisi → attendu : mots existants mais incorrects dans le contexte.
-// Les deux sens sont enregistrés pour couvrir les deux directions d'erreur.
-// Type : 'lexique' (erreur de choix de forme, pas de graphie).
-
-const CONFUSIONS_LEXICALES = new Map([
-  // peut-être (adverbe) vs peut être (pouvoir + infinitif)
-  ['peut-etre', 'peut'],
-
-  // peu (adverbe de quantité) vs peut (verbe pouvoir)
-  ['peu',  'peut'],
-  ['peut', 'peu'],
-
-  // ou (conjonction) vs où (adverbe/pronom de lieu)
-  ['ou', 'ou'],   // même sans accent → géré par supprimeAccents, voir detecter
-  // Les deux normalisés sans accent donnent 'ou' → on compare la forme originale
-  // La détection se fait sur la forme normalisée AVEC accents pour distinguer ou/où
-
-  // et (conjonction) vs est (verbe être)
-  ['et',  'est'],
-  ['est', 'et'],
-]);
-
-function detecterConfusionLexicale(attendu, saisi) {
-  // Pour ou/où : comparer avec accents (normaliser conserve les accents)
-  const a  = normaliser(attendu);
-  const s  = normaliser(saisi);
-  // Cas ou / où : supprimeAccents les rend identiques → tester avant suppression
-  if ((a === 'où' && s === 'ou') || (a === 'ou' && s === 'où'))
-    return { type: 'lexique', detail: `"${saisi}" est un mot existant mais incorrect ici — attendu : "${attendu}"` };
-
-  const aS = supprimeAccents(a);
-  const sS = supprimeAccents(s);
-  const cible = CONFUSIONS_LEXICALES.get(sS);
-  if (cible && supprimeAccents(normaliser(cible)) === aS)
-    return { type: 'lexique', detail: `"${saisi}" est un mot existant mais incorrect ici — attendu : "${attendu}"` };
-  return null;
-}
-
 // ── Labels d'affichage ────────────────────────────────────────────────────
 
 const LABELS_ERREUR = {
@@ -214,12 +215,11 @@ const LABELS_ERREUR = {
   ponctuation_incorrecte: { label: 'ponctuation incorrecte',couleur: 'orange' },
   apostrophe_manquante:   { label: 'apostrophe manquante',  couleur: 'orange' },
   apostrophe_en_trop:     { label: 'apostrophe en trop',    couleur: 'orange' },
-  lexique:                { label: 'erreur lexicale',       couleur: 'violet' },
+  frappe:                 { label: 'frappe',                couleur: 'bleu'   },
   syntaxe:                { label: 'syntaxe (accord)',      couleur: 'violet' },
   inf_participe:          { label: 'infinitif → participe', couleur: 'violet' },
   participe_inf:          { label: 'participe → infinitif', couleur: 'violet' },
-  frappe:                 { label: 'à vérifier',            couleur: 'bleu'   },
-  orthographe:            { label: 'à vérifier',            couleur: 'bleu'   },
+  orthographe:            { label: 'orthographe',           couleur: 'rouge'  },
   en_trop:                { label: 'mot en trop',           couleur: 'rouge'  },
 };
 
@@ -235,9 +235,6 @@ function classerErreur(attendu, saisi) {
 
   const confVerb = detecterConfusionVerbale(a, s);
   if (confVerb) return confVerb;
-
-  const confLex = detecterConfusionLexicale(attendu, saisi);
-  if (confLex) return confLex;
 
   if (aS === sS && a !== s) return { type: 'accent',    detail: 'accent manquant ou incorrect' };
   if (a.toLowerCase() === s.toLowerCase() && a !== s)
@@ -263,11 +260,10 @@ function classerErreur(attendu, saisi) {
   if (estPaireAccord(a, s))
     return { type: 'syntaxe', detail: 'accord : "' + saisi + '" au lieu de "' + attendu + '"' };
 
-  // frappe et orthographe fusionnés sous un seul type 'orthographe' (label : 'à vérifier')
   const dist   = levenshtein(aS, sS);
   const motRef = Math.max(aS.length, sS.length);
-  if (dist === 1)              return { type: 'orthographe', detail: `"${saisi}" ressemble à "${attendu}"` };
-  if (dist === 2 && motRef>=6) return { type: 'orthographe', detail: `"${saisi}" proche de "${attendu}"` };
+  if (dist === 1)              return { type: 'frappe', detail: `"${saisi}" ressemble à "${attendu}"` };
+  if (dist === 2 && motRef>=6) return { type: 'frappe', detail: `"${saisi}" proche de "${attendu}"` };
 
   return { type: 'orthographe', detail: `"${saisi}" au lieu de "${attendu}"` };
 }
