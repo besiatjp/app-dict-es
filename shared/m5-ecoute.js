@@ -17,17 +17,12 @@ function ecouterPhrase() {
   const saisie = document.getElementById('champ-saisie').value;
   const nbMotsSaisis = compterMotsReels(saisie);
 
-  // Écoute partielle : si ≥ 3 mots saisis ET phrase incomplète, reprendre 1 mot en arrière.
-  // Si la saisie est aussi longue ou plus longue que l'original (phrase complète ou mot en trop),
-  // relire la phrase entière depuis le début.
+  // Écoute partielle : si ≥ 3 mots saisis, reprendre 1 mot avant la position courante
   let texteALire = state.phraseOriginale;
   if (nbMotsSaisis >= 3) {
-    const mots = tokeniser(nettoyerTexte(state.phraseOriginale));
-    if (nbMotsSaisis < mots.length) {
-      const depart = Math.max(0, nbMotsSaisis - 1);
-      texteALire   = mots.slice(depart).join(' ');
-    }
-    // sinon : texteALire reste state.phraseOriginale (relecture complète)
+    const mots  = tokeniser(nettoyerTexte(state.phraseOriginale));
+    const depart = Math.max(0, nbMotsSaisis - 1);
+    texteALire  = mots.slice(depart).join(' ');
   }
 
   btn.classList.add('lecture'); btn.textContent = '⏸ En cours…';

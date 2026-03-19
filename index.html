@@ -4,100 +4,283 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Nouvelles Dictées — FLE/FLS</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&family=Lato:wght@400;700&display=swap">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bleu:       #2563EB;
+      --bleu-clair: #EFF6FF;
+      --bleu-bord:  #BFDBFE;
+      --vert:       #16A34A;
+      --vert-clair: #F0FFF4;
+      --gris-1:     #1E293B;
+      --gris-2:     #475569;
+      --gris-3:     #94A3B8;
+      --gris-4:     #E2E8F0;
+      --gris-5:     #F8FAFC;
+      --blanc:      #FFFFFF;
+      --ombre:      0 4px 16px rgba(0,0,0,0.09);
+      --rayon:      14px;
+      --fonte:      'Source Sans 3', sans-serif;
+    }
+    body {
+      font-family: var(--fonte);
+      background: #F1F5F9;
+      color: var(--gris-1);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      background: var(--blanc);
+      border-bottom: 2px solid var(--bleu);
+      padding: 0 1.5rem;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    header h1 {
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--bleu);
+    }
+    header .sous-titre {
+      font-size: 0.72rem;
+      color: var(--gris-3);
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    main {
+      flex: 1;
+      padding: 2.5rem 1.5rem;
+      max-width: 860px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .intro {
+      margin-bottom: 2rem;
+    }
+    .intro h2 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--gris-1);
+      margin-bottom: 0.4rem;
+    }
+    .intro p {
+      font-size: 0.95rem;
+      color: var(--gris-2);
+      line-height: 1.6;
+    }
+    .grille-themes {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1.2rem;
+    }
+    .carte-theme {
+      background: var(--blanc);
+      border-radius: var(--rayon);
+      box-shadow: var(--ombre);
+      border-top: 4px solid var(--bleu);
+      padding: 1.4rem 1.5rem;
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      transition: transform 0.15s, box-shadow 0.15s;
+      cursor: pointer;
+    }
+    .carte-theme:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.13);
+    }
+    .carte-theme .icone { font-size: 2rem; line-height: 1; }
+    .carte-theme .nom {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--bleu);
+    }
+    .carte-theme .description {
+      font-size: 0.85rem;
+      color: var(--gris-2);
+      line-height: 1.5;
+    }
+    .carte-theme .sous-themes {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.3rem;
+      margin-top: 0.2rem;
+    }
+    .carte-theme .tag-sous-theme {
+      font-size: 0.72rem;
+      font-weight: 600;
+      background: var(--bleu-clair);
+      color: var(--bleu);
+      border: 1px solid var(--bleu-bord);
+      padding: 0.15rem 0.5rem;
+      border-radius: 20px;
+    }
+    .carte-theme .progression {
+      margin-top: 0.4rem;
+    }
+    .carte-theme .progression-texte {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--gris-3);
+      margin-bottom: 0.25rem;
+    }
+    .carte-theme .barre {
+      height: 5px;
+      background: var(--gris-4);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+    .carte-theme .barre-fill {
+      height: 100%;
+      background: var(--vert);
+      border-radius: 3px;
+      transition: width 0.5s;
+    }
+    .carte-theme.bientot {
+      opacity: 0.5;
+      cursor: not-allowed;
+      pointer-events: none;
+      border-top-color: var(--gris-3);
+    }
+    .carte-theme.bientot .nom { color: var(--gris-2); }
+    .badge-bientot {
+      font-size: 0.7rem;
+      font-weight: 700;
+      background: var(--gris-4);
+      color: var(--gris-3);
+      padding: 0.1rem 0.5rem;
+      border-radius: 20px;
+      align-self: flex-start;
+    }
+    footer {
+      text-align: center;
+      padding: 1.2rem;
+      font-size: 0.75rem;
+      color: var(--gris-3);
+    }
+  </style>
 </head>
 <body>
 
-  <header>
-    <h1>✏️ Nouvelles Dictées</h1>
-    <span class="sous-titre">FLE · FLS · Silent Way</span>
-    <button id="btn-stats" class="btn-stats-header">📊 Stats</button>
-  </header>
+<header>
+  <h1>✏️ Nouvelles Dictées</h1>
+  <span class="sous-titre">FLE · FLS · Silent Way</span>
+</header>
 
-  <!-- Panneau statistiques -->
-  <div id="panneau-stats" class="cache">
-    <div class="stats-fond"></div>
-    <div class="stats-panneau">
-      <div class="stats-entete">
-        <h2>📊 Mes statistiques</h2>
-        <button class="btn-fermer" id="btn-fermer-stats">✕</button>
-      </div>
-      <div id="contenu-stats"></div>
-    </div>
+<main>
+  <div class="intro">
+    <h2>Choisissez un thème</h2>
+    <p>Chaque thème regroupe plusieurs séries de phrases, du plus simple au plus complexe.</p>
   </div>
 
-  <div id="app">
+  <div class="grille-themes" id="grille"></div>
+</main>
 
-    <!-- Ligne 1 : Thèmes -->
-    <section class="carte-themes">
-      <h2>Choisis un thème</h2>
-      <div id="themes"></div>
-    </section>
+<footer>Nouvelles Dictées — FLE/FLS · Silent Way</footer>
 
-    <!-- Ligne 2 : trois colonnes -->
-    <div class="colonnes">
+<script>
+// ── Définition des thèmes englobants ───────────────────────────────────────
+const THEMES = [
+  {
+    id: 'urbanisation',
+    nom: "L'urbanisation",
+    icone: '🏙️',
+    description: "Le logement, le quartier, les commerces et la ville.",
+    sousThemes: ['Maison', 'Chambre', 'Salon', 'Habitation', 'Quartier', 'Grande surface', 'La ville'],
+    dossier: 'urbanisation/index.html',
+    actif: true,
+  },
+  // Futurs thèmes — décommenter quand les dossiers sont prêts :
+  // {
+  //   id: 'etudes',
+  //   nom: "Les études",
+  //   icone: '🎓',
+  //   description: "De l'école primaire aux grandes écoles.",
+  //   sousThemes: ["L'école", "Le collège", "Le lycée", "L'université"],
+  //   dossier: 'etudes/index.html',
+  //   actif: false,
+  // },
+  // {
+  //   id: 'religions',
+  //   nom: "Religions et laïcité",
+  //   icone: '🕊️',
+  //   description: "Les trois grandes religions en France, les pratiques et la laïcité.",
+  //   sousThemes: ["Islam", "Christianisme", "Judaïsme", "La laïcité"],
+  //   dossier: 'religions/index.html',
+  //   actif: false,
+  // },
+];
 
-      <!-- Col 1 : liste des phrases -->
-      <section class="carte-phrases" id="section-phrases">
-        <h2>Phrases</h2>
-        <div id="liste-phrases">
-          <p class="hint-vide">Sélectionne un thème.</p>
+// ── Lecture des stats depuis localStorage ─────────────────────────────────
+function lireProgression(id, sousThemes) {
+  try {
+    const stats = JSON.parse(localStorage.getItem(id + '_stats') || '{}');
+    let reussies = 0, total = 0;
+    sousThemes.forEach(st => {
+      const th = stats[st] || {};
+      reussies += Object.values(th).filter(s => s.reussie).length;
+      // total sera calculé dynamiquement — on met 0 si inconnu
+      total += Object.keys(th).length > 0
+        ? Math.max(...Object.keys(th).map(Number)) + 1
+        : 0;
+    });
+    return { reussies, total };
+  } catch { return { reussies: 0, total: 0 }; }
+}
+
+// ── Rendu des cartes ───────────────────────────────────────────────────────
+function construireGrille() {
+  const grille = document.getElementById('grille');
+  grille.innerHTML = '';
+
+  THEMES.forEach(theme => {
+    const { reussies, total } = lireProgression(theme.id, theme.sousThemes);
+    const pct = total > 0 ? Math.round(reussies / total * 100) : 0;
+
+    const carte = document.createElement(theme.actif ? 'a' : 'div');
+    carte.className = 'carte-theme' + (theme.actif ? '' : ' bientot');
+    if (theme.actif) carte.href = theme.dossier;
+
+    const tags = theme.sousThemes.map(st =>
+      `<span class="tag-sous-theme">${st}</span>`
+    ).join('');
+
+    const progressionHtml = theme.actif ? `
+      <div class="progression">
+        <div class="progression-texte">
+          <span>${reussies} phrase${reussies !== 1 ? 's' : ''} réussie${reussies !== 1 ? 's' : ''}</span>
+          <span>${pct}%</span>
         </div>
-      </section>
+        <div class="barre"><div class="barre-fill" style="width:${pct}%"></div></div>
+      </div>` : '';
 
-      <!-- Col 2 : espace de travail -->
-      <section class="carte-travail" id="section-travail">
-        <h2>Espace de travail</h2>
-        <div class="travail-scroll">
+    const badgeBientot = !theme.actif
+      ? '<span class="badge-bientot">Bientôt disponible</span>' : '';
 
-          <div id="indicateur-phrase" class="indicateur-vide">
-            Choisis une phrase pour commencer.
-          </div>
+    carte.innerHTML = `
+      <div class="icone">${theme.icone}</div>
+      <div class="nom">${theme.nom}</div>
+      ${badgeBientot}
+      <div class="description">${theme.description}</div>
+      <div class="sous-themes">${tags}</div>
+      ${progressionHtml}
+    `;
 
-          <div class="groupe-boutons">
-            <button id="btn-ecouter"  class="btn-action btn-ecouter">
-              <span class="icone">▶</span> Écouter
-            </button>
-            <button id="btn-verifier" class="btn-action btn-verifier">✓ Vérifier</button>
-            <button id="btn-indice"   class="btn-action btn-indice cache">Indice</button>
-            <button id="btn-contexte" class="btn-action btn-contexte cache">Contexte</button>
-            <button id="btn-reset"    class="btn-action btn-reset">↺ Recommencer</button>
-          </div>
+    grille.appendChild(carte);
+  });
+}
 
-          <div class="zone-saisie">
-            <label for="champ-saisie">Écris la phrase ici :</label>
-            <textarea id="champ-saisie"
-              placeholder="Écris ce que tu entends…"
-              autocomplete="off" autocorrect="off"
-              autocapitalize="off" spellcheck="false"></textarea>
-          </div>
-
-          <div id="zone-resultat"></div>
-          <div id="zone-indices"></div>
-
-        </div>
-      </section>
-
-      <!-- Col 3 : historique des feedbacks -->
-      <section class="carte-historique">
-        <h2>Feedbacks</h2>
-        <div id="zone-historique">
-          <p class="histo-vide">Les feedbacks apparaîtront ici.</p>
-        </div>
-      </section>
-
-    </div>
-  </div>
-
-  <!-- Ordre de chargement : données → utilitaires → modules → orchestration -->
-  <script src="data.js"></script>
-  <script src="m1-nettoyage.js"></script>
-  <script src="m2-tokens.js"></script>
-  <script src="m3-alignement.js"></script>
-  <script src="m4-classes.js"></script>
-  <script src="m5-ecoute.js"></script>
-  <script src="m6-indices.js"></script>
-  <script src="m7-stats.js"></script>
-  <script src="app.js"></script>
+construireGrille();
+</script>
 </body>
 </html>

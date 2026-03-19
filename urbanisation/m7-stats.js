@@ -4,12 +4,12 @@
 // ── Persistance ───────────────────────────────────────────────────────────
 
 function chargerStats() {
-  try { return JSON.parse(localStorage.getItem('dictees_stats') || '{}'); }
+  try { return JSON.parse(localStorage.getItem('urbanisation_stats') || '{}'); }
   catch { return {}; }
 }
 
 function sauvegarderStats(s) {
-  localStorage.setItem('dictees_stats', JSON.stringify(s));
+  localStorage.setItem('urbanisation_stats', JSON.stringify(s));
 }
 
 function getStatPhrase(theme, i) {
@@ -48,17 +48,9 @@ function enregistrerTentative(theme, index, reussie, nbInd, erreurs) {
     // Accepte soit un objet {attendu, type} soit une string (ancien appel)
     const mot  = typeof e === 'string' ? e : e.attendu;
     const type = typeof e === 'string' ? 'orthographe' : (e.type || 'orthographe');
-    if (!mot) return; // ignorer les mots vides (erreurs en_trop)
-    if (!s.erreurs[mot]) {
-      // Première fois que ce mot est raté sur cette phrase → compter 1
-      s.erreurs[mot] = { count: 1, types: { [type]: 1 } };
-    } else {
-      // Mot déjà raté sur cette phrase lors d'une tentative précédente
-      // → ne pas incrémenter count, mais mettre à jour le type si nouveau
-      if (!s.erreurs[mot].types[type]) {
-        s.erreurs[mot].types[type] = 1;
-      }
-    }
+    if (!s.erreurs[mot]) s.erreurs[mot] = { count: 0, types: {} };
+    s.erreurs[mot].count++;
+    s.erreurs[mot].types[type] = (s.erreurs[mot].types[type] || 0) + 1;
   });
 
   stats[theme][index] = s;

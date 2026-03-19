@@ -641,15 +641,6 @@ h1 {
   overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
 }
 
-/* ─── Avertissement analyse ──────────────────────────────────────────────── */
-.avertissement-analyse {
-  font-size: 0.75rem;
-  color: var(--gris-3);
-  font-style: italic;
-  margin-top: 0.3rem;
-  line-height: 1.4;
-}
-
 /* ─── Suggestion de renforcement ─────────────────────────────────────────── */
 .suggestion-renforcement {
   display: flex; align-items: flex-start; gap: 0.5rem;
@@ -664,3 +655,15 @@ h1 {
   text-decoration: underline; cursor: pointer; padding: 0;
 }
 .btn-suggestion:hover { color: #4C1D95; }
+
+/* ─── Bouton retour accueil ──────────────────────────────────────────────── */
+.btn-accueil {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 32px; height: 32px; border-radius: 50%;
+  background: var(--bleu-clair); color: var(--bleu);
+  border: 1.5px solid var(--bleu-bord);
+  font-size: 1rem; text-decoration: none;
+  flex-shrink: 0;
+  transition: background 0.15s;
+}
+.btn-accueil:hover { background: #DBEAFE; }

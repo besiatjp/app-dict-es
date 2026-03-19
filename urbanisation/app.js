@@ -46,7 +46,12 @@ function bindEvents() {
 function construireThemes() {
   const c = document.getElementById('themes');
   c.innerHTML = '';
-  Object.keys(DICTEES).forEach(theme => {
+  // Utiliser l'ordre défini dans THEMES_ENGLOBANTS si disponible, sinon DICTEES
+  const ordre = (typeof THEMES_ENGLOBANTS !== 'undefined')
+    ? Object.values(THEMES_ENGLOBANTS)[0]
+    : Object.keys(DICTEES);
+  ordre.forEach(theme => {
+    if (!DICTEES[theme]) return;
     const s   = getStatsTheme(theme);
     const pct = s.total > 0 ? Math.round(s.reussies/s.total*100) : 0;
     const btn = document.createElement('button');
